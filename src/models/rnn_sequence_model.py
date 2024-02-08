@@ -40,11 +40,29 @@ class SequenceModel(nn.Module):
         outputs = torch.cat((mean, log_var.exp()), dim=-1)
         return outputs, hidden
 
-def get_data(train_ds, valid_ds, bs=64):
+def make_dataset(data):
+    s_series = data[:,0,:]
+    x_series = data[:,1,:]
+
+    # we need to shift the output by one wrt the input
+    x_lagged = torch.roll(x_series, 1, dims=-1)
+    x_lagged[..., 0] = 0.0
+
+    input = torch.cat((s_series.unsqueeze(-1), x_lagged.unsqueeze(-1)), dim=-1)
+    target = x_series.unsqueeze(-1)
+    
+    return TensorDataset(input, target)
+
+def get_data(corpus, bs=64):
+    train_data = corpus["training"]
+    valid_data = corpus["validation"]
+    train_ds = make_dataset(train_data)
+    valid_ds = make_dataset(valid_data)
     return (
         DataLoader(train_ds, batch_size=bs, shuffle=True),
         DataLoader(valid_ds, batch_size=bs*4)
     )
+
 
 def loss_batch(model, loss_func, input, target, opt=None):
     hidden = model.init_hidden(input)
@@ -59,4 +77,17 @@ def loss_batch(model, loss_func, input, target, opt=None):
 
     return loss.item(), len(input)
 
+def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
+    for epoch in range(1, epochs+1):
+        model.train()
+        for xb, yb in train_dl:
+            loss_batch(model, loss_func, xb, yb, opt)
 
+        model.eval()
+        with torch.no_grad():
+            batch_losses, nums = zip(
+                *[loss_batch(model, loss_func, xb, yb) for xb, yb in valid_dl]
+            )
+        val_loss = np.dot(batch_losses, nums) / np.sum(nums)
+        
+        epoch % 100 == 0 and print(epoch, val_loss)
