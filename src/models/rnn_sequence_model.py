@@ -4,6 +4,8 @@ from torch import nn, optim
 from torch.nn import functional as F
 from torch.utils.data import DataLoader, TensorDataset
 
+import numpy as np
+
 # Define the model
 
 class SequenceModel(nn.Module):
@@ -77,7 +79,10 @@ def loss_batch(model, loss_func, input, target, opt=None):
 
     return loss.item(), len(input)
 
-def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
+def default_logger(epoch, loss):
+    epoch % 100 == 0 and print(epoch, loss)
+
+def fit(epochs, model, loss_func, opt, train_dl, valid_dl, logger=default_logger):
     for epoch in range(1, epochs+1):
         model.train()
         for xb, yb in train_dl:
@@ -89,5 +94,4 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
                 *[loss_batch(model, loss_func, xb, yb) for xb, yb in valid_dl]
             )
         val_loss = np.dot(batch_losses, nums) / np.sum(nums)
-        
-        epoch % 100 == 0 and print(epoch, val_loss)
+        logger(epoch, val_loss)

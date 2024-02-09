@@ -1,0 +1,2 @@
+INFO - model-size-sweep - Running command 'my_main'
+INFO - model-size-sweep - Started run with ID "2"

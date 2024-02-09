@@ -8,12 +8,10 @@ import numpy as np
 import rnn_sequence_model as model
 from rnn_sequence_model import get_data, fit
 
-project_dir = Path(__file__).resolve().parents[2]
-
 parser = argparse.ArgumentParser(description='Stochastic sequence model')
-parser.add_argument('-i', '--input', type=Path, default=project_dir / 'data' / 'gaussian_data.pt',
-                    help='path to input file (default %(default)s)')
-parser.add_argument('-o', '--output', type=Path, default=project_dir / 'models',
+parser.add_argument('-i', '--input', type=Path, required=True,
+                    help='path to input file containing training data (default %(default)s)')
+parser.add_argument('-o', '--output', type=Path, required=True,
                     help='path to store output file (default %(default)s)')
 parser.add_argument('--model', type=str, default='LSTM', choices=['LSTM', 'GRU', 'RNN'],
                     help='Which model type to use (default %(default)s).')
@@ -51,9 +49,7 @@ except KeyboardInterrupt:
     print('-' * 89)
     print('Exiting from training early')
 
-filename = f"stochseq_{args.model}_layers={args.layers}_hidden={args.hidden_size}.pt"
-save_path = args.output / filename
-torch.save(model, save_path)
+torch.save(model, args.output)
 
-print(f'saved model to {save_path}')
+print(f'saved model to {args.output}')
 
