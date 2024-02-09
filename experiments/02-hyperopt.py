@@ -15,5 +15,6 @@ for model, hidden_size, layer in product(models, hidden_sizes, layers):
     ex.run(config_updates={
         'model': model,
         'hidden_size': hidden_size,
-        'layers': layer
+        'layers': layer,
+        'epochs': 1_000,
     })
