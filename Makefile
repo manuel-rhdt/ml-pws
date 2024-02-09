@@ -1,4 +1,4 @@
-.PHONY: data clean lint
+.PHONY: data clean lint train
 
 #################################################################################
 # GLOBALS                                                                       #
@@ -36,13 +36,25 @@ lint:
 create_environment:
 	conda env create -f environment.yml
 
+STOCH_SEQ_MODELS := GRU LSTM RNN
+.PHONY: $(STOCH_SEQ_MODELS)
+MODEL_PREFIX := model=
+MODEL_ARGS := layers=1_hidden=16
+
+## Train stochastic sequence models
+train: $(STOCH_SEQ_MODELS)
 
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################
 
 data/gaussian_data.pt:
-	$(PYTHON_INTERPRETER) src/data/make_gaussian_dataset.py
+	$(PYTHON_INTERPRETER) src/data/make_gaussian_dataset.py -o $@
+
+$(STOCH_SEQ_MODELS): %: models/stochseq_model=%_layers=1_hidden=16.pt
+
+models/stochseq_$(MODEL_PREFIX)%_$(MODEL_ARGS).pt : data/gaussian_data.pt
+	$(PYTHON_INTERPRETER) src/models/main.py --model $* -i $< -o $@
 
 #################################################################################
 # Self Documenting Commands                                                     #
