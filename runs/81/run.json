@@ -1,0 +1,1678 @@
+{
+  "artifacts": [
+    "stochseq_model=LSTM_layers=2_hidden=8.pt"
+  ],
+  "command": "my_main",
+  "experiment": {
+    "base_dir": "/data/volume_2/ml-pws/experiments",
+    "dependencies": [
+      "numpy==1.26.3",
+      "sacred==0.8.5",
+      "src==0.1.0",
+      "torch==2.2.0"
+    ],
+    "mainfile": "01-model-size.py",
+    "name": "model-size-sweep",
+    "repositories": [
+      {
+        "commit": "423cf70941833c83a2189f4a99e05f8192301879",
+        "dirty": true,
+        "url": "git@github.com:manuel-rhdt/ml-pws.git"
+      }
+    ],
+    "sources": [
+      [
+        "01-model-size.py",
+        "_sources/01-model-size_af4e685bf8b30f04fcd5b782569884d6.py"
+      ]
+    ]
+  },
+  "heartbeat": "2024-02-12T15:55:19.025050",
+  "host": {
+    "ENV": {},
+    "cpu": "Intel(R) Xeon(R) Gold 6226 CPU @ 2.70GHz",
+    "gpus": {
+      "driver_version": "515.43.04",
+      "gpus": [
+        {
+          "model": "NVIDIA GeForce RTX 2080 Ti",
+          "persistence_mode": true,
+          "total_memory": 11264
+        }
+      ]
+    },
+    "hostname": "jupyternoteboo.data-driveninfo.src.surf-hosted.nl",
+    "os": [
+      "Linux",
+      "Linux-5.4.0-170-generic-x86_64-with-glibc2.31"
+    ],
+    "python_version": "3.12.1"
+  },
+  "meta": {
+    "command": "my_main",
+    "config_updates": {
+      "epochs": 500,
+      "hidden_size": 8,
+      "layers": 2,
+      "model": "LSTM"
+    },
+    "named_configs": [],
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--id": null,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false
+    }
+  },
+  "resources": [
+    [
+      "/data/volume_2/ml-pws/data/gaussian_data.pt",
+      "runs/_resources/gaussian_data_9c245717ccc76eae8c24740276bb1775.pt"
+    ]
+  ],
+  "result": {
+    "py/object": "src.models.rnn_sequence_model.SequenceModel",
+    "py/state": {
+      "_backward_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_backward_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_buffers": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_hooks_always_called": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_hooks_with_kwargs": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_pre_hooks_with_kwargs": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_is_full_backward_hook": null,
+      "_load_state_dict_post_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_load_state_dict_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_modules": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": [
+              {
+                "py/tuple": [
+                  "rnn",
+                  {
+                    "py/object": "torch.nn.modules.rnn.LSTM",
+                    "py/state": {
+                      "_all_weights": [
+                        [
+                          "weight_ih_l0",
+                          "weight_hh_l0",
+                          "bias_ih_l0",
+                          "bias_hh_l0"
+                        ],
+                        [
+                          "weight_ih_l1",
+                          "weight_hh_l1",
+                          "bias_ih_l1",
+                          "bias_hh_l1"
+                        ]
+                      ],
+                      "_backward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_backward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_buffers": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_flat_weights": [
+                        {
+                          "py/id": 36
+                        },
+                        {
+                          "py/id": 41
+                        },
+                        {
+                          "py/id": 46
+                        },
+                        {
+                          "py/id": 51
+                        },
+                        {
+                          "py/id": 56
+                        },
+                        {
+                          "py/id": 61
+                        },
+                        {
+                          "py/id": 66
+                        },
+                        {
+                          "py/id": 71
+                        }
+                      ],
+                      "_flat_weights_names": [
+                        "weight_ih_l0",
+                        "weight_hh_l0",
+                        "bias_ih_l0",
+                        "bias_hh_l0",
+                        "weight_ih_l1",
+                        "weight_hh_l1",
+                        "bias_ih_l1",
+                        "bias_hh_l1"
+                      ],
+                      "_forward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_always_called": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_is_full_backward_hook": null,
+                      "_load_state_dict_post_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_load_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_modules": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_non_persistent_buffers_set": {
+                        "py/set": []
+                      },
+                      "_parameters": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": [
+                              {
+                                "py/tuple": [
+                                  "weight_ih_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  0,
+                                                  {
+                                                    "py/tuple": [
+                                                      32,
+                                                      2
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      2,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "weight_hh_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  64,
+                                                  {
+                                                    "py/tuple": [
+                                                      32,
+                                                      8
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      8,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias_ih_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  832,
+                                                  {
+                                                    "py/tuple": [
+                                                      32
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias_hh_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  864,
+                                                  {
+                                                    "py/tuple": [
+                                                      32
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "weight_ih_l1",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  320,
+                                                  {
+                                                    "py/tuple": [
+                                                      32,
+                                                      8
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      8,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "weight_hh_l1",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  576,
+                                                  {
+                                                    "py/tuple": [
+                                                      32,
+                                                      8
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      8,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias_ih_l1",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  896,
+                                                  {
+                                                    "py/tuple": [
+                                                      32
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias_hh_l1",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "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"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  928,
+                                                  {
+                                                    "py/tuple": [
+                                                      32
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "_state_dict_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "batch_first": true,
+                      "bias": true,
+                      "bidirectional": false,
+                      "dropout": 0.0,
+                      "hidden_size": 8,
+                      "input_size": 2,
+                      "mode": "LSTM",
+                      "num_layers": 2,
+                      "proj_size": 0,
+                      "training": false
+                    }
+                  }
+                ]
+              },
+              {
+                "py/tuple": [
+                  "linear",
+                  {
+                    "py/object": "torch.nn.modules.linear.Linear",
+                    "py/state": {
+                      "_backward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_backward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_buffers": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_always_called": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_is_full_backward_hook": null,
+                      "_load_state_dict_post_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_load_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_modules": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_non_persistent_buffers_set": {
+                        "py/set": []
+                      },
+                      "_parameters": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": [
+                              {
+                                "py/tuple": [
+                                  "weight",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE3Nzg2MzU1MDRxAlgGAAAAY3VkYTowcQNLEk50cQRRLoACXXEAWAoAAAAxNzc4NjM1NTA0cQFhLhIAAAAAAAAAHtUDv+X2Dz/5Wn8+PhYSP+T0Iz/lOx6+Q81Lv8IGwr4clJQ+anc1P5xQ8j7XH64+V1vmvvwMLz56mAo/yW8LPg0sCr6QmIG8"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  0,
+                                                  {
+                                                    "py/tuple": [
+                                                      2,
+                                                      9
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      9,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE3Nzk1ODQxOTJxAlgGAAAAY3VkYTowcQNLAk50cQRRLoACXXEAWAoAAAAxNzc5NTg0MTkycQFhLgIAAAAAAAAANNFVvj0nZr4="
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  0,
+                                                  {
+                                                    "py/tuple": [
+                                                      2
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "_state_dict_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "in_features": 9,
+                      "out_features": 2,
+                      "training": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "_non_persistent_buffers_set": {
+        "py/set": []
+      },
+      "_parameters": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_state_dict_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_state_dict_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "hidden_size": 8,
+      "num_layers": 2,
+      "training": false
+    }
+  },
+  "start_time": "2024-02-12T15:54:03.275473",
+  "status": "COMPLETED",
+  "stop_time": "2024-02-12T15:55:19.024408"
+}

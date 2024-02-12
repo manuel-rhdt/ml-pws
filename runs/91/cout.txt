@@ -1,0 +1,12 @@
+INFO - model-size-sweep - Running command 'my_main'
+
+INFO - model-size-sweep - Started run with ID "91"
+
+                                                                                                            Failed to detect content-type automatically for artifact /data/volume_2/ml-pws/models/stochseq_model=RNN_layers=2_hidden=88.pt.
+  3%|▉                             | 3/100 [05:00<1:56:29, 72.05s/trial, best loss: 0.00010715195821831003]INFO - model-size-sweep - Result: SequenceModel(
+  (rnn): RNN(2, 88, num_layers=2, batch_first=True)
+  (linear): Linear(in_features=89, out_features=2, bias=True)
+)
+
+INFO - model-size-sweep - Completed after 0:01:22
+

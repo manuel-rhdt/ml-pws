@@ -95,3 +95,25 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl, logger=default_logger
             )
         val_loss = np.dot(batch_losses, nums) / np.sum(nums)
         logger(epoch, val_loss)
+
+# input is a (N, L) tensor where N are the number of batches and L is the length
+def generate(model, input):
+    N, L = input.size()
+    model.eval()
+    with torch.no_grad():
+        # the first x-value we feed into the RNN is zero, consistent with the training eamples
+        pred = torch.zeros((N, 1, 1), device=input.device)
+        predictions = []
+        h_n = []
+        hidden = None
+        for i in range(L):
+            inp = torch.cat((input[:, i].reshape((N, 1, 1)), pred), dim=-1)
+            output, hidden = model(inp, hidden)
+            pred_mean, pred_var = output.split(1, dim=-1)
+            pred = torch.normal(pred_mean, pred_var.sqrt())
+            
+            predictions.append(pred)
+            h_n.append(hidden)
+        predictions = torch.cat(predictions, dim=1).squeeze(2)
+        
+        return predictions, h_n

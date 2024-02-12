@@ -1,0 +1,1316 @@
+{
+  "artifacts": [
+    "stochseq_model=GRU_layers=1_hidden=8.pt"
+  ],
+  "command": "my_main",
+  "experiment": {
+    "base_dir": "/data/volume_2/ml-pws/experiments",
+    "dependencies": [
+      "numpy==1.26.3",
+      "sacred==0.8.5",
+      "src==0.1.0",
+      "torch==2.2.0"
+    ],
+    "mainfile": "01-model-size.py",
+    "name": "model-size-sweep",
+    "repositories": [
+      {
+        "commit": "423cf70941833c83a2189f4a99e05f8192301879",
+        "dirty": true,
+        "url": "git@github.com:manuel-rhdt/ml-pws.git"
+      }
+    ],
+    "sources": [
+      [
+        "01-model-size.py",
+        "_sources/01-model-size_af4e685bf8b30f04fcd5b782569884d6.py"
+      ]
+    ]
+  },
+  "heartbeat": "2024-02-12T16:12:15.119330",
+  "host": {
+    "ENV": {},
+    "cpu": "Intel(R) Xeon(R) Gold 6226 CPU @ 2.70GHz",
+    "gpus": {
+      "driver_version": "515.43.04",
+      "gpus": [
+        {
+          "model": "NVIDIA GeForce RTX 2080 Ti",
+          "persistence_mode": true,
+          "total_memory": 11264
+        }
+      ]
+    },
+    "hostname": "jupyternoteboo.data-driveninfo.src.surf-hosted.nl",
+    "os": [
+      "Linux",
+      "Linux-5.4.0-170-generic-x86_64-with-glibc2.31"
+    ],
+    "python_version": "3.12.1"
+  },
+  "meta": {
+    "command": "my_main",
+    "config_updates": {
+      "epochs": 500,
+      "hidden_size": 8,
+      "layers": 1,
+      "model": "GRU"
+    },
+    "named_configs": [],
+    "options": {
+      "--beat-interval": null,
+      "--capture": null,
+      "--comment": null,
+      "--debug": false,
+      "--enforce_clean": false,
+      "--file_storage": null,
+      "--force": false,
+      "--help": false,
+      "--id": null,
+      "--loglevel": null,
+      "--mongo_db": null,
+      "--name": null,
+      "--pdb": false,
+      "--print-config": false,
+      "--priority": null,
+      "--queue": false,
+      "--s3": null,
+      "--sql": null,
+      "--tiny_db": null,
+      "--unobserved": false
+    }
+  },
+  "resources": [
+    [
+      "/data/volume_2/ml-pws/data/gaussian_data.pt",
+      "runs/_resources/gaussian_data_9c245717ccc76eae8c24740276bb1775.pt"
+    ]
+  ],
+  "result": {
+    "py/object": "src.models.rnn_sequence_model.SequenceModel",
+    "py/state": {
+      "_backward_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_backward_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_buffers": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_hooks_always_called": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_hooks_with_kwargs": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_forward_pre_hooks_with_kwargs": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_is_full_backward_hook": null,
+      "_load_state_dict_post_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_load_state_dict_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_modules": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": [
+              {
+                "py/tuple": [
+                  "rnn",
+                  {
+                    "py/object": "torch.nn.modules.rnn.GRU",
+                    "py/state": {
+                      "_all_weights": [
+                        [
+                          "weight_ih_l0",
+                          "weight_hh_l0",
+                          "bias_ih_l0",
+                          "bias_hh_l0"
+                        ]
+                      ],
+                      "_backward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_backward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_buffers": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_flat_weights": [
+                        {
+                          "py/id": 36
+                        },
+                        {
+                          "py/id": 41
+                        },
+                        {
+                          "py/id": 46
+                        },
+                        {
+                          "py/id": 51
+                        }
+                      ],
+                      "_flat_weights_names": [
+                        "weight_ih_l0",
+                        "weight_hh_l0",
+                        "bias_ih_l0",
+                        "bias_hh_l0"
+                      ],
+                      "_forward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_always_called": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_is_full_backward_hook": null,
+                      "_load_state_dict_post_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_load_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_modules": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_non_persistent_buffers_set": {
+                        "py/set": []
+                      },
+                      "_parameters": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": [
+                              {
+                                "py/tuple": [
+                                  "weight_ih_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE5MzI5MzIxNjBxAlgGAAAAY3VkYTowcQNNIAFOdHEEUS6AAl1xAFgKAAAAMTkzMjkzMjE2MHEBYS4gAQAAAAAAAIIdRD1KzBm+aJqdvg9V6T5RNpQ+b5qHPt9/yrwsmxW/whFSPSadHb+BpKU+LXFYvg+PmL7T6UC8octPPVfexT55NPC9nUv6PT8GgL6DqL0+SOgRv7vdTD71FMM+fN6YviXJzj4KrbK+BWbkPro/MDwSKoI9CRgDviinEr5dhOi9n1CJvUA8Ab7CMzk9ymwbv8jgnb0If/c+KT7/vb2aAj+wXdU9sPHMvnyinT7AQha/PwbxvKxE4T1+iOu9hxIuvpX0Ob4dN9u9o5X9vV41Mb3KEts9PReiPituwT7DTD0/xTCBvlDOvDwPJr6+lMiSvp+qZ75hR90+XLTVvV+mOL0XpUY9/PKuvq8aEz77KIM6Ux2tvYTDdj4+vJa9GGFfPpqTbj3Bq8C9sU+DPN01oj6Yx1u+4vkTvgxXVToTHIA+zqYFv9eZqr4bS3A+PhtUvuzzDj9/QrM+O9R3PoWxqrzkBYo+uOH1PrgB/z3Xi2a9ms3MPm/rAL1yZT6+4yh6vXKN+b3Pc/i+pxZnvJrgp73YHwE//tqPPneLBj5EAjY/wiBxvoWOt767TEE+Jv3Wu4oHtD1ifIQ+viI/PzvJgLzJCqy93swzPn5Dhj4G9FM/MVTAvpFlVL+SuQ+/gyyVvtMEHD8RksY927fpPg3Iez5Yyje+NG7qvoo55r7ZEAW/Ju3CPlFviD3gopu+rxUnP7jMnL6NXKu+kv/mvlSfRr/ZjMY+sfWqPsBrcL6ElIs+UCGZvtb57r05Pj+/9sCxvrWTjj444wQ/G/MAv2DLCz9I+1W+36HBvQytU7/Kcte++74wP4+3RD+yySK/9qNNP1bCSb/diCi9tOxbv76xHL/b7Iy8Yz38vTs8sb2Nnw0+PasCv2eiCD0VRO++bq8HvqrCsj5IDp8++w+Lvj/Dwb3fHx+/nX8Av+IaJ7/BY62+RKWbPtjKEz+DpAi/njOYPm/U/r4qvAQ+CSpJvvyFtb5d1Qe9+RaKPt3Cbr50pJs+VKa5vv0etzt+dr2+emy2vlENgL0tjxW+r7nAPcSvVj548b6+m6i6PUatyb2lLaU+NITwvJbcVL0qDz++GNLMPsNBCL8+u4c+S8znPW7ruL7ZyLq9uzAJvj4f2z4YWQa/OAHOPkg3WL3XPrw+cRH6PtcmgT6Xyoq9rxcaPhH3h74oZZy90+2nvmH34bwcm6y8MOmuvkeUEj73Q9a7iU4Gv6askT41VP48Y1pWPUSQyD71Hxa/4y+TvuIovT4M3Kc7WqCjPn8HCj9urDg/0pDnPlNSBT+WIk++tbw7PpzvuT5lsc0+NG07PhSFrz7EQE0+1JWMvhQ8E74tMRC/6tmlviIe/b5f2OC+yEv0vsi8B7+VCKq+08DPvtJhtj2UC4S9PCeoPjrryD3nnvA+YK+2PsNIFT+U/ui8jICpPN8wrj5F3Cg/fzjFvh3yGz/zUxA9esorvpgUrr2eUai+FivOvlru1730YOW+GSzTPSFQvb0hNGQ9apcLvx244j6fdqK++t0XP85o8D0N4KM+ANsqPw=="
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  0,
+                                                  {
+                                                    "py/tuple": [
+                                                      24,
+                                                      2
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      2,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "weight_hh_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE5MzI5MzIxNjBxAlgGAAAAY3VkYTowcQNNIAFOdHEEUS6AAl1xAFgKAAAAMTkzMjkzMjE2MHEBYS4gAQAAAAAAAIIdRD1KzBm+aJqdvg9V6T5RNpQ+b5qHPt9/yrwsmxW/whFSPSadHb+BpKU+LXFYvg+PmL7T6UC8octPPVfexT55NPC9nUv6PT8GgL6DqL0+SOgRv7vdTD71FMM+fN6YviXJzj4KrbK+BWbkPro/MDwSKoI9CRgDviinEr5dhOi9n1CJvUA8Ab7CMzk9ymwbv8jgnb0If/c+KT7/vb2aAj+wXdU9sPHMvnyinT7AQha/PwbxvKxE4T1+iOu9hxIuvpX0Ob4dN9u9o5X9vV41Mb3KEts9PReiPituwT7DTD0/xTCBvlDOvDwPJr6+lMiSvp+qZ75hR90+XLTVvV+mOL0XpUY9/PKuvq8aEz77KIM6Ux2tvYTDdj4+vJa9GGFfPpqTbj3Bq8C9sU+DPN01oj6Yx1u+4vkTvgxXVToTHIA+zqYFv9eZqr4bS3A+PhtUvuzzDj9/QrM+O9R3PoWxqrzkBYo+uOH1PrgB/z3Xi2a9ms3MPm/rAL1yZT6+4yh6vXKN+b3Pc/i+pxZnvJrgp73YHwE//tqPPneLBj5EAjY/wiBxvoWOt767TEE+Jv3Wu4oHtD1ifIQ+viI/PzvJgLzJCqy93swzPn5Dhj4G9FM/MVTAvpFlVL+SuQ+/gyyVvtMEHD8RksY927fpPg3Iez5Yyje+NG7qvoo55r7ZEAW/Ju3CPlFviD3gopu+rxUnP7jMnL6NXKu+kv/mvlSfRr/ZjMY+sfWqPsBrcL6ElIs+UCGZvtb57r05Pj+/9sCxvrWTjj444wQ/G/MAv2DLCz9I+1W+36HBvQytU7/Kcte++74wP4+3RD+yySK/9qNNP1bCSb/diCi9tOxbv76xHL/b7Iy8Yz38vTs8sb2Nnw0+PasCv2eiCD0VRO++bq8HvqrCsj5IDp8++w+Lvj/Dwb3fHx+/nX8Av+IaJ7/BY62+RKWbPtjKEz+DpAi/njOYPm/U/r4qvAQ+CSpJvvyFtb5d1Qe9+RaKPt3Cbr50pJs+VKa5vv0etzt+dr2+emy2vlENgL0tjxW+r7nAPcSvVj548b6+m6i6PUatyb2lLaU+NITwvJbcVL0qDz++GNLMPsNBCL8+u4c+S8znPW7ruL7ZyLq9uzAJvj4f2z4YWQa/OAHOPkg3WL3XPrw+cRH6PtcmgT6Xyoq9rxcaPhH3h74oZZy90+2nvmH34bwcm6y8MOmuvkeUEj73Q9a7iU4Gv6askT41VP48Y1pWPUSQyD71Hxa/4y+TvuIovT4M3Kc7WqCjPn8HCj9urDg/0pDnPlNSBT+WIk++tbw7PpzvuT5lsc0+NG07PhSFrz7EQE0+1JWMvhQ8E74tMRC/6tmlviIe/b5f2OC+yEv0vsi8B7+VCKq+08DPvtJhtj2UC4S9PCeoPjrryD3nnvA+YK+2PsNIFT+U/ui8jICpPN8wrj5F3Cg/fzjFvh3yGz/zUxA9esorvpgUrr2eUai+FivOvlru1730YOW+GSzTPSFQvb0hNGQ9apcLvx244j6fdqK++t0XP85o8D0N4KM+ANsqPw=="
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  48,
+                                                  {
+                                                    "py/tuple": [
+                                                      24,
+                                                      8
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      8,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias_ih_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE5MzI5MzIxNjBxAlgGAAAAY3VkYTowcQNNIAFOdHEEUS6AAl1xAFgKAAAAMTkzMjkzMjE2MHEBYS4gAQAAAAAAAIIdRD1KzBm+aJqdvg9V6T5RNpQ+b5qHPt9/yrwsmxW/whFSPSadHb+BpKU+LXFYvg+PmL7T6UC8octPPVfexT55NPC9nUv6PT8GgL6DqL0+SOgRv7vdTD71FMM+fN6YviXJzj4KrbK+BWbkPro/MDwSKoI9CRgDviinEr5dhOi9n1CJvUA8Ab7CMzk9ymwbv8jgnb0If/c+KT7/vb2aAj+wXdU9sPHMvnyinT7AQha/PwbxvKxE4T1+iOu9hxIuvpX0Ob4dN9u9o5X9vV41Mb3KEts9PReiPituwT7DTD0/xTCBvlDOvDwPJr6+lMiSvp+qZ75hR90+XLTVvV+mOL0XpUY9/PKuvq8aEz77KIM6Ux2tvYTDdj4+vJa9GGFfPpqTbj3Bq8C9sU+DPN01oj6Yx1u+4vkTvgxXVToTHIA+zqYFv9eZqr4bS3A+PhtUvuzzDj9/QrM+O9R3PoWxqrzkBYo+uOH1PrgB/z3Xi2a9ms3MPm/rAL1yZT6+4yh6vXKN+b3Pc/i+pxZnvJrgp73YHwE//tqPPneLBj5EAjY/wiBxvoWOt767TEE+Jv3Wu4oHtD1ifIQ+viI/PzvJgLzJCqy93swzPn5Dhj4G9FM/MVTAvpFlVL+SuQ+/gyyVvtMEHD8RksY927fpPg3Iez5Yyje+NG7qvoo55r7ZEAW/Ju3CPlFviD3gopu+rxUnP7jMnL6NXKu+kv/mvlSfRr/ZjMY+sfWqPsBrcL6ElIs+UCGZvtb57r05Pj+/9sCxvrWTjj444wQ/G/MAv2DLCz9I+1W+36HBvQytU7/Kcte++74wP4+3RD+yySK/9qNNP1bCSb/diCi9tOxbv76xHL/b7Iy8Yz38vTs8sb2Nnw0+PasCv2eiCD0VRO++bq8HvqrCsj5IDp8++w+Lvj/Dwb3fHx+/nX8Av+IaJ7/BY62+RKWbPtjKEz+DpAi/njOYPm/U/r4qvAQ+CSpJvvyFtb5d1Qe9+RaKPt3Cbr50pJs+VKa5vv0etzt+dr2+emy2vlENgL0tjxW+r7nAPcSvVj548b6+m6i6PUatyb2lLaU+NITwvJbcVL0qDz++GNLMPsNBCL8+u4c+S8znPW7ruL7ZyLq9uzAJvj4f2z4YWQa/OAHOPkg3WL3XPrw+cRH6PtcmgT6Xyoq9rxcaPhH3h74oZZy90+2nvmH34bwcm6y8MOmuvkeUEj73Q9a7iU4Gv6askT41VP48Y1pWPUSQyD71Hxa/4y+TvuIovT4M3Kc7WqCjPn8HCj9urDg/0pDnPlNSBT+WIk++tbw7PpzvuT5lsc0+NG07PhSFrz7EQE0+1JWMvhQ8E74tMRC/6tmlviIe/b5f2OC+yEv0vsi8B7+VCKq+08DPvtJhtj2UC4S9PCeoPjrryD3nnvA+YK+2PsNIFT+U/ui8jICpPN8wrj5F3Cg/fzjFvh3yGz/zUxA9esorvpgUrr2eUai+FivOvlru1730YOW+GSzTPSFQvb0hNGQ9apcLvx244j6fdqK++t0XP85o8D0N4KM+ANsqPw=="
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  240,
+                                                  {
+                                                    "py/tuple": [
+                                                      24
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias_hh_l0",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE5MzI5MzIxNjBxAlgGAAAAY3VkYTowcQNNIAFOdHEEUS6AAl1xAFgKAAAAMTkzMjkzMjE2MHEBYS4gAQAAAAAAAIIdRD1KzBm+aJqdvg9V6T5RNpQ+b5qHPt9/yrwsmxW/whFSPSadHb+BpKU+LXFYvg+PmL7T6UC8octPPVfexT55NPC9nUv6PT8GgL6DqL0+SOgRv7vdTD71FMM+fN6YviXJzj4KrbK+BWbkPro/MDwSKoI9CRgDviinEr5dhOi9n1CJvUA8Ab7CMzk9ymwbv8jgnb0If/c+KT7/vb2aAj+wXdU9sPHMvnyinT7AQha/PwbxvKxE4T1+iOu9hxIuvpX0Ob4dN9u9o5X9vV41Mb3KEts9PReiPituwT7DTD0/xTCBvlDOvDwPJr6+lMiSvp+qZ75hR90+XLTVvV+mOL0XpUY9/PKuvq8aEz77KIM6Ux2tvYTDdj4+vJa9GGFfPpqTbj3Bq8C9sU+DPN01oj6Yx1u+4vkTvgxXVToTHIA+zqYFv9eZqr4bS3A+PhtUvuzzDj9/QrM+O9R3PoWxqrzkBYo+uOH1PrgB/z3Xi2a9ms3MPm/rAL1yZT6+4yh6vXKN+b3Pc/i+pxZnvJrgp73YHwE//tqPPneLBj5EAjY/wiBxvoWOt767TEE+Jv3Wu4oHtD1ifIQ+viI/PzvJgLzJCqy93swzPn5Dhj4G9FM/MVTAvpFlVL+SuQ+/gyyVvtMEHD8RksY927fpPg3Iez5Yyje+NG7qvoo55r7ZEAW/Ju3CPlFviD3gopu+rxUnP7jMnL6NXKu+kv/mvlSfRr/ZjMY+sfWqPsBrcL6ElIs+UCGZvtb57r05Pj+/9sCxvrWTjj444wQ/G/MAv2DLCz9I+1W+36HBvQytU7/Kcte++74wP4+3RD+yySK/9qNNP1bCSb/diCi9tOxbv76xHL/b7Iy8Yz38vTs8sb2Nnw0+PasCv2eiCD0VRO++bq8HvqrCsj5IDp8++w+Lvj/Dwb3fHx+/nX8Av+IaJ7/BY62+RKWbPtjKEz+DpAi/njOYPm/U/r4qvAQ+CSpJvvyFtb5d1Qe9+RaKPt3Cbr50pJs+VKa5vv0etzt+dr2+emy2vlENgL0tjxW+r7nAPcSvVj548b6+m6i6PUatyb2lLaU+NITwvJbcVL0qDz++GNLMPsNBCL8+u4c+S8znPW7ruL7ZyLq9uzAJvj4f2z4YWQa/OAHOPkg3WL3XPrw+cRH6PtcmgT6Xyoq9rxcaPhH3h74oZZy90+2nvmH34bwcm6y8MOmuvkeUEj73Q9a7iU4Gv6askT41VP48Y1pWPUSQyD71Hxa/4y+TvuIovT4M3Kc7WqCjPn8HCj9urDg/0pDnPlNSBT+WIk++tbw7PpzvuT5lsc0+NG07PhSFrz7EQE0+1JWMvhQ8E74tMRC/6tmlviIe/b5f2OC+yEv0vsi8B7+VCKq+08DPvtJhtj2UC4S9PCeoPjrryD3nnvA+YK+2PsNIFT+U/ui8jICpPN8wrj5F3Cg/fzjFvh3yGz/zUxA9esorvpgUrr2eUai+FivOvlru1730YOW+GSzTPSFQvb0hNGQ9apcLvx244j6fdqK++t0XP85o8D0N4KM+ANsqPw=="
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  264,
+                                                  {
+                                                    "py/tuple": [
+                                                      24
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "_state_dict_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "batch_first": true,
+                      "bias": true,
+                      "bidirectional": false,
+                      "dropout": 0.0,
+                      "hidden_size": 8,
+                      "input_size": 2,
+                      "mode": "GRU",
+                      "num_layers": 1,
+                      "proj_size": 0,
+                      "training": false
+                    }
+                  }
+                ]
+              },
+              {
+                "py/tuple": [
+                  "linear",
+                  {
+                    "py/object": "torch.nn.modules.linear.Linear",
+                    "py/state": {
+                      "_backward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_backward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_buffers": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_always_called": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_forward_pre_hooks_with_kwargs": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_is_full_backward_hook": null,
+                      "_load_state_dict_post_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_load_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_modules": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_non_persistent_buffers_set": {
+                        "py/set": []
+                      },
+                      "_parameters": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": [
+                              {
+                                "py/tuple": [
+                                  "weight",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE3OTM2MjQ2NTZxAlgGAAAAY3VkYTowcQNLEk50cQRRLoACXXEAWAoAAAAxNzkzNjI0NjU2cQFhLhIAAAAAAAAAHqFIvrKQ6b425zA/d1suP3hdL76hyBO/eubevZEaOz2WqZw+lba2Pi3GzD7imIK+vniBPt46Er/XDIK+u8myvvKApb58xB09"
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  0,
+                                                  {
+                                                    "py/tuple": [
+                                                      2,
+                                                      9
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      9,
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "py/tuple": [
+                                  "bias",
+                                  {
+                                    "py/reduce": [
+                                      {
+                                        "py/function": "torch._utils._rebuild_parameter"
+                                      },
+                                      {
+                                        "py/tuple": [
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/function": "torch._utils._rebuild_tensor_v2"
+                                              },
+                                              {
+                                                "py/tuple": [
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/function": "torch.storage._load_from_bytes"
+                                                      },
+                                                      {
+                                                        "py/tuple": [
+                                                          {
+                                                            "py/b64": "gAKKCmz8nEb5IGqoUBkugAJN6QMugAJ9cQAoWBAAAABwcm90b2NvbF92ZXJzaW9ucQFN6QNYDQAAAGxpdHRsZV9lbmRpYW5xAohYCgAAAHR5cGVfc2l6ZXNxA31xBChYBQAAAHNob3J0cQVLAlgDAAAAaW50cQZLBFgEAAAAbG9uZ3EHSwR1dS6AAihYBwAAAHN0b3JhZ2VxAGN0b3JjaApGbG9hdFN0b3JhZ2UKcQFYCgAAADE5MzI5MzIyNzJxAlgGAAAAY3VkYTowcQNLAk50cQRRLoACXXEAWAoAAAAxOTMyOTMyMjcycQFhLgIAAAAAAAAABA0dvVE5h74="
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  },
+                                                  0,
+                                                  {
+                                                    "py/tuple": [
+                                                      2
+                                                    ]
+                                                  },
+                                                  {
+                                                    "py/tuple": [
+                                                      1
+                                                    ]
+                                                  },
+                                                  false,
+                                                  {
+                                                    "py/reduce": [
+                                                      {
+                                                        "py/type": "collections.OrderedDict"
+                                                      },
+                                                      {
+                                                        "py/tuple": []
+                                                      },
+                                                      null,
+                                                      null,
+                                                      {
+                                                        "py/tuple": []
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          true,
+                                          {
+                                            "py/reduce": [
+                                              {
+                                                "py/type": "collections.OrderedDict"
+                                              },
+                                              {
+                                                "py/tuple": []
+                                              },
+                                              null,
+                                              null,
+                                              {
+                                                "py/tuple": []
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "_state_dict_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "_state_dict_pre_hooks": {
+                        "py/reduce": [
+                          {
+                            "py/type": "collections.OrderedDict"
+                          },
+                          {
+                            "py/tuple": []
+                          },
+                          null,
+                          null,
+                          {
+                            "py/tuple": []
+                          }
+                        ]
+                      },
+                      "in_features": 9,
+                      "out_features": 2,
+                      "training": false
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "_non_persistent_buffers_set": {
+        "py/set": []
+      },
+      "_parameters": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_state_dict_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "_state_dict_pre_hooks": {
+        "py/reduce": [
+          {
+            "py/type": "collections.OrderedDict"
+          },
+          {
+            "py/tuple": []
+          },
+          null,
+          null,
+          {
+            "py/tuple": []
+          }
+        ]
+      },
+      "hidden_size": 8,
+      "num_layers": 1,
+      "training": false
+    }
+  },
+  "start_time": "2024-02-12T16:11:06.090616",
+  "status": "COMPLETED",
+  "stop_time": "2024-02-12T16:12:15.117627"
+}
