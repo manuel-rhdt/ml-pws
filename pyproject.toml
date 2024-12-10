@@ -1,0 +1,14 @@
+[project]
+name = "ml_pws"
+version = "0.1.0"
+description = "A short description of the project."
+authors = [{ name = "Manuel Reinhardt" }]
+license = { text = "MIT" }
+readme = "README.md"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = {}
