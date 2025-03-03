@@ -119,6 +119,7 @@ class ContrastiveEstimator(L.LightningModule):
     def training_step(self, batch, batch_index):
         s, x = batch
         loss = self(s, x)
+        self.log("train_loss", loss, on_epoch=True, prog_bar=True, logger=True)
         return loss
     
     def validation_step(self, batch, batch_index):
