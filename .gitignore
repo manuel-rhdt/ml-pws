@@ -1,5 +1,6 @@
 # Custom entries
 
+notebooks/lightning_logs
 metrics/
 
 # Byte-compiled / optimized / DLL files

@@ -1,12 +1,11 @@
 import torch
 import torch.nn as nn
 
-from torch.utils.data import DataLoader, TensorDataset
-
 import numpy as np
 
+from scipy.special import expit
 
-def generate_stable_ar_coefficients(n, seed=None):
+def generate_stable_ar_coefficients(n, seed=0):
     """
     Generates stable AR(n) coefficients.
 
@@ -17,8 +16,7 @@ def generate_stable_ar_coefficients(n, seed=None):
     Returns:
         numpy.ndarray: Stable AR coefficients of shape (n,).
     """
-    if seed is not None:
-        np.random.seed(seed)
+    rng = np.random.default_rng(seed)
 
     # Generate random roots outside the unit circle
     min_magnitude = 1.1
@@ -29,22 +27,22 @@ def generate_stable_ar_coefficients(n, seed=None):
         remaining = n - len(roots)
         if remaining >= 2:
             # Randomly choose to add a real root or a complex pair
-            add_complex = np.random.rand() > 0.5
+            add_complex = rng.random() > 0.5
         else:
             add_complex = False  # Only enough space for a real root
 
         if add_complex and remaining >= 2:
             # Generate a complex conjugate pair
-            magnitude = np.random.uniform(min_magnitude, max_magnitude)
-            angle = np.random.uniform(0, 2 * np.pi)
+            magnitude = rng.uniform(min_magnitude, max_magnitude)
+            angle = rng.uniform(0, 2 * np.pi)
             root = magnitude * np.exp(1j * angle)
             roots.append(root)
             roots.append(np.conj(root))
         else:
             # Generate a real root
-            magnitude = np.random.uniform(min_magnitude, max_magnitude)
+            magnitude = rng.uniform(min_magnitude, max_magnitude)
             # Randomly choose positive or negative real root
-            sign = np.random.choice([-1, 1])
+            sign = rng.choice([-1, 1])
             root = sign * magnitude
             roots.append(root)
 
@@ -75,13 +73,17 @@ class ARModel(nn.Module):
         super(ARModel, self).__init__()
         self.n = n
 
-        stable_coeffs = init_coeffs(n)
+        if callable(init_coeffs):
+            coeffs = init_coeffs(n)
+        else:
+            coeffs = init_coeffs
+
         # Trainable coefficients
-        self.coefficients = nn.Parameter(torch.tensor(stable_coeffs).flip(0))
+        self.coefficients = nn.Parameter(torch.tensor(coeffs).flip(0))
         self.log_noise_std = nn.Parameter(torch.log(torch.tensor(noise_std)))
 
     @torch.no_grad()
-    def sample(self, initial_values, steps):
+    def sample(self, initial_values, steps, seed = None):
         """
         Generate a sequence from the AR process.
 
@@ -92,20 +94,25 @@ class ARModel(nn.Module):
         Returns:
             tensor: Generated AR sequences of shape (batch_size, steps).
         """
+        generator = torch.Generator(initial_values.device)
+        if seed is not None:
+            generator.manual_seed(seed)
+        else:
+            generator.seed()
+
         batch_size = initial_values.shape[0]
-        sequence = torch.zeros(batch_size, steps, device=initial_values.device)
+        sequence = torch.zeros(batch_size, steps + self.n, device=initial_values.device)
         sequence[:, : self.n] = initial_values
-        # sequence = initial_values
 
         noise_std = torch.exp(self.log_noise_std)
-        for t in range(self.n, steps):
+        for t in range(self.n, steps + self.n):
             # Compute AR value
             ar_value = torch.sum(sequence[:, t - self.n : t] * self.coefficients, dim=1)
             # Add noise
-            noise = torch.randn(batch_size, device=sequence.device) * noise_std
+            noise = torch.randn(batch_size, generator=generator) * noise_std
             sequence[:, t] = ar_value + noise
 
-        return sequence
+        return sequence[:, self.n:]
 
 
 # OUTPUT MODEL
@@ -120,7 +127,7 @@ class LogisticModel:
     noise: float
 
     def __call__(self, s, x):
-        bias = 1 / (1 + np.exp(-s * self.gain))
+        bias = expit(self.gain * s)
         x_prev = np.zeros_like(x)
         x_prev[:, 1:] = x[:, :-1]
         dx = x - self.decay * x_prev - bias
@@ -137,9 +144,9 @@ class LogisticModel:
 
         x_prev = np.zeros(s.shape[:1])
         x = np.zeros_like(s)
+        logistic_s = expit(self.gain * s)
         for t in range(s.shape[-1]):
-            s_cur = s[:, t]
-            bias = 1 / (1 + np.exp(-s_cur * self.gain))
+            bias = logistic_s[:, t]
             x[:, t] = (
                 bias + self.decay * x_prev + self.noise * rng.normal(size=x_prev.shape)
             )
@@ -149,18 +156,15 @@ class LogisticModel:
 
 
 def generate_nonlinear_data(
-    num_pairs=1000, length=50, seed=0, order=3, gain=5.0, decay=0.5, noise=1.0
+    num_pairs=1000, length=10, seed=0, order=3, coeffs=generate_stable_ar_coefficients, gain=10.0, decay=0.2, noise=0.2
 ):
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-
     n = order
-    ar_model = ARModel(n)
+    ar_model = ARModel(n, init_coeffs=coeffs)
 
     initial_values = torch.zeros(num_pairs, n)
-    s_trajs = ar_model.sample(initial_values, length)
+    s_trajs = ar_model.sample(initial_values, length, seed=seed+1)
 
     x_model = LogisticModel(gain, decay, noise)
-    x_trajs = x_model.sample(s_trajs.numpy(), seed=seed + 1)
+    x_trajs = x_model.sample(s_trajs.numpy(), seed=seed + 2)
 
     return s_trajs, torch.tensor(x_trajs)

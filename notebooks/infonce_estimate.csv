@@ -1,0 +1,11 @@
+length,MI,logN,model_path
+1,0.37995481491088867,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_35/checkpoints/epoch=9-step=200.ckpt
+2,0.7243227958679199,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_36/checkpoints/epoch=9-step=200.ckpt
+4,1.4101109504699707,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_37/checkpoints/epoch=9-step=200.ckpt
+6,2.0425987243652344,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_38/checkpoints/epoch=9-step=200.ckpt
+8,2.5843076705932617,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_39/checkpoints/epoch=9-step=200.ckpt
+10,3.0642662048339844,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_30/checkpoints/epoch=9-step=200.ckpt
+20,5.034539699554443,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_31/checkpoints/epoch=9-step=200.ckpt
+30,6.013926029205322,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_32/checkpoints/epoch=9-step=200.ckpt
+40,6.374467849731445,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_33/checkpoints/epoch=9-step=200.ckpt
+50,6.660031795501709,6.907755278982137,/home/reinhardt/ml-pws/notebooks/lightning_logs/version_34/checkpoints/epoch=9-step=200.ckpt
