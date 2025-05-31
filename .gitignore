@@ -1,7 +1,12 @@
 # Custom entries
 
-notebooks/lightning_logs
+**/lightning_logs
+notebooks/checkpoints
 metrics/
+
+# Don't track PBS logs
+*.ER
+*.OU
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
