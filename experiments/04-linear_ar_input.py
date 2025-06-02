@@ -1,4 +1,3 @@
-from random import sample
 import jax
 import jax.numpy as jnp
 from jax import random
@@ -17,6 +16,7 @@ import os
 import dataclasses
 import argparse
 from pathlib import Path
+from typing import Optional
 
 from ml_pws.data.nonlinear_dataset import generate_nonlinear_data
 
@@ -41,68 +41,54 @@ def parse_args():
 
     return parser.parse_args()
 
+class ARModel:
+    """
+    A JAX-based Autoregressive AR(p) model.
+    """
+    def __init__(self, coefficients: jax.Array, noise_std: float):
+        """
+        Initializes the AR(p) model.
 
-class InputModel(nnx.Module):
-    def __init__(self, birth=100.0, death=1.0, dt=1e-2, rngs: nnx.Rngs | None = None):
-        self.birth = birth
-        self.death = death
-        self.dt = dt
-        self.rngs = rngs
+        Args:
+            coefficients (jnp.ndarray): A 1D JAX array of shape (p,)
+                                        containing the AR coefficients
+                                        (phi_1, phi_2, ..., phi_p).
+            noise_std (float): The standard deviation (sigma) of the
+                               Gaussian white noise.
+        """
+        self.coeffs = jnp.asarray(coefficients)
+        self.noise_std = jnp.asarray(noise_std)
+        self.p = len(coefficients)
 
-    def __call__(self, s: jax.Array, generate=False, rngs: nnx.Rngs | None = None):
-        birth = self.birth
-        death = self.death
-        dt = self.dt
-        sigma = jnp.sqrt(2 * birth * dt)
+    def __call__(self, s: jax.Array):
+        """
+        Computes log P(s) for the AR(p) model.
+        """
+        coeffs = self.coeffs
+        noise_std = self.noise_std
 
-        if rngs is None and self.rngs is not None:
-            rng = self.rngs["input"]
-        else:
-            rng = rngs
+        def step_logp(carry, s_t):
+            predicted_mean = jnp.dot(coeffs, jnp.flip(carry))
+            log_prob = -0.5 * jnp.log(2 * jnp.pi * noise_std**2) - 0.5 * ((s_t - predicted_mean) / noise_std)**2
 
-        def step(carry: tuple[jax.Array | None, jax.Array, jax.Array], s: jax.Array):
-            key, logp, s_prev = carry
-            ds = dt * (birth - death * s_prev)
-            if key is not None:
-                key, next_key = random.split(key)
-                s = s_prev + ds + sigma * random.normal(key, s.shape)
-            else:
-                next_key = None
-            logp += jax.scipy.stats.norm.logpdf(s - s_prev - ds, scale=sigma)
-            return (next_key, logp, s), (s if generate else None)
+            # Update the carry: shift old values and add the current s_t
+            new_carry = jnp.roll(carry, -1) # Shift all elements to the left
+            new_carry = jax.ops.index_update(new_carry, jax.ops.index[-1], s_t) # Update the last element
 
-        if generate:
-            if rng is None:
-                raise ValueError("Need to provide rng for generating.")
-            s0 = random.normal(rng(), s.shape[:-1]) * jnp.sqrt(birth / death)
-            key = rng()
-        else:
-            s0 = s[..., 0]
-            key = None
+            return new_carry, log_prob
 
-        logp_init = jax.scipy.stats.norm.logpdf(s0, scale=jnp.sqrt(birth / death))
-
-        (_, logp, _), traj = jax.lax.scan(step, (key, logp_init, s0), s[..., 1:].T)
-
-        if generate:
-            assert traj is not None, "Internal Error"
-            return logp, jnp.concatenate((jnp.expand_dims(s0, -1), traj.T), axis=-1)
-        else:
-            return logp
+        carry, result = jax.lax.scan(step_logp, jnp.zeros(self.p), s)
+        return result
 
 
 @dataclasses.dataclass
-class NonlinearModel(nnx.Module):
-    rho: float
-    n: float
-    K: float
-    mu: float
-    dt: float
-    rngs: nnx.Rngs | None = None
-
-    def __call__(
-        self, s: jax.Array, x: jax.Array, generate=False, rngs: nnx.Rngs | None = None
-    ):
+class LogisticModel(nnx.Module):
+    gain: float
+    decay: float
+    noise: float
+    rngs: Optional[nnx.Rngs] = None
+    
+    def __call__(self, s, x, generate=False, rngs = None):
         if s.ndim > 2:
             raise ValueError("s has more than 2 dimensions")
         if x.ndim > 2:
@@ -110,34 +96,23 @@ class NonlinearModel(nnx.Module):
         s = jnp.reshape(s, (-1, s.shape[-1]))
         x = jnp.reshape(x, (-1, x.shape[-1]))
 
-        sigma = jnp.sqrt(self.rho * self.dt)
-
         rngs = self.rngs if rngs is None else rngs
-        if generate:
-            assert rngs is not None, "We require rng for generating."
-            key = rngs["generate"]()
-        else:
-            key = None
-
+        key = rngs['generate']() if generate else None
         x_prev = jnp.zeros(x.shape[:1])
-        logp = jnp.zeros(x.shape[:1]) + jnp.zeros(s.shape[:1])  # broadcasting
-
-        def step(
-            state: tuple[jax.Array | None, jax.Array, jax.Array],
-            val: tuple[jax.Array, jax.Array],
-        ):
+        logp = jnp.zeros(x.shape[:1]) + jnp.zeros(s.shape[:1]) # broadcasting
+        
+        def step(state, val):
             key, logp, x_prev = state
             s_cur, x_cur = val
-            a = s_cur**self.n / (self.K**self.n + s_cur**self.n)
-            dx = self.dt * (a * self.rho - self.mu * x_prev)
-            if key is not None:
+            bias = jax.nn.sigmoid(s_cur * self.gain)
+            if generate:
                 next_key, key = random.split(key)
-                x_cur = x_prev + dx + sigma * jax.random.normal(key, x_cur.shape)
+                x_cur = bias + self.decay * x_prev + self.noise * jax.random.normal(key, x_cur.shape)
             else:
                 next_key = None
-            logp += jax.scipy.stats.norm.logpdf(x_prev + dx - x_cur, scale=sigma)
+            logp += jax.scipy.stats.norm.logpdf(x_cur - self.decay * x_prev - bias, scale=self.noise)
             return (next_key, logp, x_cur), x_cur
-
+    
         (_, logp, _), x = jax.lax.scan(step, (key, logp, x_prev), (s.T, x.T))
 
         if generate:
@@ -145,6 +120,22 @@ class NonlinearModel(nnx.Module):
         else:
             return logp
 
+    def log_prob(self, s, x, full=False):
+        def step(carry, val):
+            logp, xprev = carry
+            s, x = val
+            delta = jax.scipy.stats.norm.logpdf(x - self.decay * xprev - jax.nn.sigmoid(s * self.gain), scale=self.noise)
+            return (logp + delta, x), (logp+delta) if full else None
+    
+        (logp, _), logp_full = jax.lax.scan(step, (0.0, 0.0), [s, x])
+        return logp_full if full else logp
+
+def shift_right(x, axis=1):
+    pad_widths = [(0, 0)] * len(x.shape)
+    pad_widths[axis] = (1, 0)
+    ind = [slice(None)] * len(x.shape)
+    ind[axis] = slice(-1)
+    return jnp.pad(x, pad_widths)[tuple(ind)]
 
 class GRUCell(nnx.Module):
     def __init__(
@@ -445,7 +436,9 @@ class CombinedModel(nnx.Module):
 
 
 class TrainerModule:
-    def __init__(self, model, logdir=None):
+    def __init__(self, model, s, x, logdir):
+        self.s = s
+        self.x = x
         self.model = model
         self.logdir = logdir
         self.create_functions()
@@ -453,13 +446,13 @@ class TrainerModule:
     @staticmethod
     def forward_loss(model, s, x):
         loss = -model(s, x)
-        return jnp.mean(loss), {"loss": loss}
+        return jnp.mean(loss), {'loss': loss}
 
     @staticmethod
     def backward_loss(model, x, subsample=1):
         elbo = model.elbo(x, num_samples=subsample)
         loss = -jnp.mean(elbo)
-        return loss, {"elbo": elbo}
+        return loss, {'elbo': elbo}
 
     def create_functions(self):
         def train_step_forward(model, optimizer, s_batch, x_batch):
@@ -467,122 +460,109 @@ class TrainerModule:
             (loss, metrics), grads = grad_fn(model, s_batch, x_batch)
             optimizer.update(grads=grads)
             return loss, metrics
-
         self.train_step_forward = nnx.jit(train_step_forward)
 
         def train_step_backward(model, optimizer, x, subsample=1):
-            grad_fn = nnx.value_and_grad(
-                self.backward_loss, has_aux=True, wrt=optimizer.wrt
-            )
+            grad_fn = nnx.value_and_grad(self.backward_loss, has_aux=True, wrt=optimizer.wrt)
             (loss, metrics), grads = grad_fn(model, x, subsample)
             optimizer.update(grads=grads)
             return loss, metrics
+        self.train_step_backward = nnx.jit(train_step_backward, static_argnames='subsample')
 
-        self.train_step_backward = nnx.jit(
-            train_step_backward, static_argnames="subsample"
-        )
-
-    def train_forward_model(
-        self, key, s, x, num_steps=500, batch_size=64, learning_rate=1e-2
-    ):
-        num_samples = s.shape[0]
+    def train_forward_model(self, key, num_steps=500, batch_size=64, learning_rate=1e-2):
+        num_samples = self.s.shape[0]
         schedule = optax.cosine_decay_schedule(
-            learning_rate, num_steps * len(range(0, num_samples, batch_size)), alpha=0.1
+            learning_rate, num_steps *  len(range(0, num_samples, batch_size)), 
+            alpha=0.1
         )
         optimizer = nnx.Optimizer(self.model.forward, optax.adamw(schedule))
 
-        AverageLoss = metrics.Average.from_output("loss")
-        if self.logdir is not None:
-            writer = metric_writers.create_default_writer(
-                os.path.join(self.logdir, "Forward")
-            )
-        else:
-            writer = metric_writers.LoggingWriter()
+        AverageLoss = metrics.Average.from_output('loss')
+        writer = metric_writers.create_default_writer(os.path.join(self.logdir, 'Forward'))
 
         for epoch in range(num_steps):
             epoch_key = random.fold_in(key, epoch)
             perm = random.permutation(epoch_key, num_samples)
-            s_shuffle = s[perm]
-            x_shuffle = x[perm]
+            s_shuffle = self.s[perm]
+            x_shuffle = self.x[perm]
 
             average_loss = AverageLoss.empty()
             for j in range(0, num_samples, batch_size):
-                s_batch = s_shuffle[j : j + batch_size]
-                x_batch = x_shuffle[j : j + batch_size]
+                s_batch = s_shuffle[j:j+batch_size]
+                x_batch = x_shuffle[j:j+batch_size]
                 loss, train_metrics = self.train_step_forward(
-                    self.model.forward, optimizer, s_batch, x_batch
+                    self.model.forward, 
+                    optimizer, 
+                    s_batch, 
+                    x_batch
                 )
                 average_loss = average_loss.merge(
-                    AverageLoss.from_model_output(loss=train_metrics["loss"])
+                    AverageLoss.from_model_output(
+                        loss=train_metrics['loss']
+                    )
                 )
             scalars = {
-                "loss": average_loss.compute(),
-                "learning rate": schedule(optimizer.step.value),
+                'loss': average_loss.compute(), 
+                'learning rate': schedule(optimizer.step.value)
             }
-            if writer is not None:
-                writer.write_scalars(epoch + 1, scalars)
+            writer.write_scalars(epoch + 1, scalars)
 
     def train_backward_model(
-        self,
-        key,
-        x: jax.Array,
-        num_steps=500,
-        batch_size=64,
-        subsample=16,
-        learning_rate=5e-3,
+        self, 
+        key, 
+        num_steps=500, 
+        batch_size=64, 
+        subsample=16, 
+        learning_rate=5e-3
     ):
-        num_samples = x.shape[0]
-
+        num_samples = self.x.shape[0]
+        
         # only optimize parameters of backward model
-        backward_filter = nnx.All(nnx.Param, lambda path, val: "backward" in path)
+        backward_filter = nnx.All(nnx.Param, lambda path, val: 'backward' in path)
 
         schedule = optax.exponential_decay(
-            learning_rate, num_steps * len(range(0, num_samples, batch_size)), 0.5
+            learning_rate, num_steps *  len(range(0, num_samples, batch_size)), 
+            0.5
         )
-
+        
         optimizer = nnx.Optimizer(self.model, optax.adamw(schedule), backward_filter)
 
-        AverageLoss = metrics.Average.from_output("loss")
-        if self.logdir is not None:
-            writer = metric_writers.create_default_writer(
-                os.path.join(self.logdir, "Backward")
-            )
-        else:
-            writer = metric_writers.LoggingWriter()
+        AverageLoss = metrics.Average.from_output('loss')
+        writer = metric_writers.create_default_writer(os.path.join(self.logdir, 'Backward'))
 
         for epoch in range(num_steps):
             epoch_key = random.fold_in(key, epoch)
             perm = random.permutation(epoch_key, num_samples)
-            x_shuffle = x[perm]
+            x_shuffle = self.x[perm]
 
             average_loss = AverageLoss.empty()
             for j in range(0, num_samples, batch_size):
-                x_batch = x_shuffle[j : j + batch_size]
-                _, train_metrics = self.train_step_backward(
-                    self.model, optimizer, x_batch, subsample=subsample
+                x_batch = x_shuffle[j:j+batch_size]
+                loss, train_metrics = self.train_step_backward(
+                    self.model, 
+                    optimizer, 
+                    x_batch, 
+                    subsample=subsample
                 )
                 average_loss = average_loss.merge(
-                    AverageLoss.from_model_output(loss=-train_metrics["elbo"])
+                    AverageLoss.from_model_output(
+                        loss=-train_metrics['elbo']
+                    )
                 )
             scalars = {
-                "loss": average_loss.compute(),
-                "learning rate": schedule(optimizer.step.value),
+                'loss': average_loss.compute(), 
+                'learning rate': schedule(optimizer.step.value)
             }
-            if writer is not None:
-                writer.write_scalars(epoch + 1, scalars)
-                # writer.write_histograms(epoch + 1, metrics)
+            writer.write_scalars(epoch + 1, scalars)
 
-    def mutual_information(self, length=50, sample_size=1000):
-        _, s = self.model.prior(jnp.empty((sample_size, length)), generate=True)
-        _, x = self.model.forward(s, jnp.empty_like(s), generate=True)
-
+    def mutual_information(self, s, x):
         cond = self.model.conditional_probability(s, x)
         marg, ess = self.model.marginal_probability(x)
 
-        return cond - marg, ess
+        return jnp.mean(cond - marg), jnp.mean(ess)
 
 
-def run_simulation(rho=1.0, mu=1.0, n=1.0, K=100.0, length=500, dt=1e-2):
+def run_simulation(rho=1.0, mu=1.0, n=1.0, K=100.0, length=500, dt=1e-2, sample_size = 1000):
     input_model = InputModel(dt=dt, rngs=nnx.Rngs(1))
     output_model = NonlinearModel(rho=rho, mu=mu, n=n, K=K, dt=dt, rngs=nnx.Rngs(2))
 
@@ -592,8 +572,6 @@ def run_simulation(rho=1.0, mu=1.0, n=1.0, K=100.0, length=500, dt=1e-2):
         backward=VariationalRnn(64, 16, rngs=nnx.Rngs(3)),
         # backward=IAF(21, 256, 8, rngs=nnx.Rngs(3)),
     )
-
-    sample_size = 1000
 
     _, s = input_model(jnp.empty((sample_size, length)), generate=True)
     _, x = output_model(s, jnp.empty_like(s), generate=True)
