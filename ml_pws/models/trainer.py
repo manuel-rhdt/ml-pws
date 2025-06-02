@@ -2,7 +2,7 @@ from jax import random
 import jax.numpy as jnp
 from flax import nnx
 import optax
-from clu import metrics
+from clu import metrics, metric_writers
 
 class TrainerModule:
     def __init__(self, model, s, x, logdir):
@@ -124,10 +124,7 @@ class TrainerModule:
             }
             writer.write_scalars(epoch + 1, scalars)
 
-    def mutual_information(self, sample_size=1000):
-        _, s = self.model.prior(jnp.empty((sample_size, 50)), generate=True)
-        _, x = self.model.forward(s, jnp.empty_like(s), generate=True)
-
+    def mutual_information(self, s, x):
         cond = self.model.conditional_probability(s, x)
         marg, ess = self.model.marginal_probability(x)
 
