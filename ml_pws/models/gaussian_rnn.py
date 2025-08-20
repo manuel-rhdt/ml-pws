@@ -14,9 +14,7 @@ class GaussianRNN(nn.Module):
         self.rnn = nn.RNN(features, hidden_size, num_layers, batch_first=True)
 
         # Linear layer to output mean and log-variance
-        self.output_layer = nn.Linear(
-            hidden_size, 2 * features
-        )  # 2 for mean and log-variance
+        self.output_layer = nn.Linear(hidden_size, 2)  # 2 for mean and log-variance
 
     def forward(self, x: torch.Tensor):
         batch_size, seq_len = x.size()
@@ -76,48 +74,6 @@ class ConditionalGaussianRNN(GaussianRNN):
         var = torch.exp(log_var)
         log_prob = -0.5 * (torch.log(2 * torch.pi * var) + (x - mean) ** 2 / var)
         return log_prob
-
-
-class MLPWSEstimator(L.LightningModule):
-    def __init__(self, input_model, forward_model, backward_model):
-        self.input_model = input_model
-        self.forward_model = forward_model
-        self.backward_model = backward_model
-
-        # We need multiple optimizers for forward and backward model.
-        # This is not possible with automatic optimization.
-        self.automatic_optimization = False
-
-    def elbo(self, s: torch.tensor, x: torch.tensor):
-        logq_s = self.backward_model(s, x)
-        logp_s = self.input_model(s)
-        logp_x_given_s = self.forward_model(s, x)
-        return logp_s + logp_x_given_s - logq_s
-
-    def training_step(self, batch, batch_idx):
-        s, x = batch
-
-        opt_forward, opt_backward = self.optimizers()
-
-        # forward step
-        opt_forward.zero_grad()
-        forward_loss = -self.forward_model(s, x)
-        self.log("forward_loss", forward_loss)
-        self.manual_backward(forward_loss)
-        opt_forward.step()
-
-        # backward step
-        opt_backward.zero_grad()
-        preds = self.backward_model.rsample(x)
-        backward_loss = self.elbo(preds, x).mean()
-        self.log("backward_loss", backward_loss)
-        self.manual_backward(backward_loss)
-        opt_backward.step()
-
-    def configure_optimizers(self):
-        forward_opt = torch.optim.Adam(self.forward_model.parameters(), lr=1e-3)
-        backward_opt = torch.optim.Adam(self.backward_model.parameters(), lr=1e-3)
-        return forward_opt, backward_opt
 
 
 class DoeEstimator(L.LightningModule):

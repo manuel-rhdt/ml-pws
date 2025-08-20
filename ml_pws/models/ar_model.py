@@ -2,6 +2,7 @@ import jax
 import jax.numpy as jnp
 from flax import nnx
 
+
 class ARModel(nnx.Module):
     """
     A JAX-based Autoregressive AR(p) model.
@@ -31,10 +32,8 @@ class ARModel(nnx.Module):
 
         def step_logp(carry, s_t):
             predicted_mean = jnp.dot(coeffs, carry)
-            log_prob = (
-                -0.5 * jnp.log(2 * jnp.pi * noise_std**2)
-                - 0.5 * ((s_t - predicted_mean) / noise_std) ** 2
-            )
+            residual = s_t - predicted_mean
+            log_prob = jax.scipy.stats.norm.logpdf(residual, scale=noise_std)
 
             # Update the carry: shift old values and add the current s_t
             new_carry = jnp.roll(carry, -1)  # Shift all elements to the left
@@ -43,14 +42,15 @@ class ARModel(nnx.Module):
             return new_carry, log_prob
 
         def computation(s):
-            carry, result = jax.lax.scan(step_logp, jnp.zeros(self.p), s)
+            initial_carry = jnp.zeros(self.p)
+            _, result = jax.lax.scan(step_logp, initial_carry, s)
             return result
 
         if s.ndim == 1:
             # If s is a 1D array, we can directly compute the log probabilities
             return computation(s)
         elif s.ndim == 2:
-            # If s is a 2D array, we need to apply the computation across the first axis
+            # If s is a 2D array, we need to apply the computation across axis 0
             return jax.vmap(computation)(s)
         else:
             raise ValueError("Input array s must be 1D or 2D.")

@@ -1,9 +1,6 @@
-import jax.numpy as jnp
-from jax import random
-
 import numpy as np
-from flax import nnx
 import polars as pl
+import torch
 
 from absl import logging
 
@@ -13,39 +10,33 @@ import json
 import datetime
 import socket
 
-from ml_pws.data.nonlinear_dataset import generate_nonlinear_data
-from ml_pws.models.ar_model import ARModel
-from ml_pws.models.logistic_model import LogisticModel
-from ml_pws.models.variational_rnn import VariationalRnn
-from ml_pws.models.predictive_rnn import PredictiveRnn, ConvolutionalAutoregressiveModel
-from ml_pws.models.trainer import Trainer, CombinedModel
 
-
-def run_simulation(s, x, val_s, val_x, args, ground_truth=False, key=random.key(0)):
-    input_model = ARModel(coefficients=args.ar_coeffs, noise_std=args.ar_std)
-
-    rngs = nnx.Rngs(key)
-
-    if ground_truth:
-        output_model = LogisticModel(
-            gain=args.gain, decay=args.decay, noise=args.output_noise, rngs=rngs
-        )
-    else:
-        # output_model = PredictiveRnn(args.hidden_features, rngs=rngs)
-        output_model = ConvolutionalAutoregressiveModel(10, 16, 8, rngs=rngs)
+def pws_simulate(
+    s,
+    x,
+    val_s,
+    val_x,
+    input_model,
+    output_model,
+    train_forward_model=True,
+    args=None,
+    rngs=None,
+):
+    from jax import random
+    from ml_pws.models.variational_rnn import VariationalRnn
+    from ml_pws.models.trainer import CombinedModel, Trainer
 
     comb_model = CombinedModel(
         prior=input_model,
         forward=output_model,
-        backward=VariationalRnn(args.hidden_features, 16, rngs=rngs),
+        backward=VariationalRnn(args.hidden_features, 8, 2, rngs=rngs),
     )
 
-    k1, k2 = random.split(key)
-
+    k1, k2 = random.split(random.key(args.seed))
     trainer = Trainer(comb_model, s, x, args.o / "metrics")
-    if not ground_truth:
+    if train_forward_model:
         trainer.train_forward_model(k1, args.forward_epochs)
-    trainer.train_backward_model(k2, args.backward_epochs, subsample=1)
+    trainer.train_backward_model(k2, args.backward_epochs, subsample=16, learning_rate=1e-2)
 
     path_mi, ess = trainer.mutual_information(val_s, val_x)
     path_mi = np.asarray(path_mi)
@@ -66,11 +57,114 @@ def run_simulation(s, x, val_s, val_x, args, ground_truth=False, key=random.key(
     return df
 
 
+def run_simulation(s, x, val_s, val_x, args, seed=0):
+    if args.estimator == "ML-PWS":
+        from jax import numpy as jnp
+        from flax import nnx
+        from ml_pws.models.ar_model import ARModel
+        from ml_pws.models.predictive_rnn import ConvolutionalAutoregressiveModel
+
+        rngs = nnx.Rngs(seed)
+        input_model = ARModel(coefficients=args.ar_coeffs, noise_std=args.ar_std)
+        output_model = ConvolutionalAutoregressiveModel(1, 16, 8, rngs=rngs)
+        return pws_simulate(
+            jnp.array(s),
+            jnp.array(x),
+            jnp.array(val_s),
+            jnp.array(val_x),
+            input_model,
+            output_model,
+            train_forward_model=True,
+            args=args,
+            rngs=rngs,
+        )
+    elif args.estimator == "PWS":
+        import jax.numpy as jnp
+        from flax import nnx
+        from ml_pws.models.ar_model import ARModel
+        from ml_pws.models.logistic_model import LogisticModel
+
+        rngs = nnx.Rngs(seed)
+        input_model = ARModel(coefficients=args.ar_coeffs, noise_std=args.ar_std)
+        output_model = LogisticModel(
+            gain=args.gain, decay=args.decay, noise=args.output_noise, rngs=rngs
+        )
+        return pws_simulate(
+            jnp.array(s),
+            jnp.array(x),
+            jnp.array(val_s),
+            jnp.array(val_x),
+            input_model,
+            output_model,
+            train_forward_model=False,
+            args=args,
+            rngs=rngs,
+        )
+    elif args.estimator == "DoE":
+        import lightning as L
+        from torch.utils.data import DataLoader, TensorDataset
+        from ml_pws.models.gaussian_rnn import DoeEstimator
+
+        train_dataset = TensorDataset(s, x)
+        validation_dataset = TensorDataset(val_s, val_x)
+
+        train_loader = DataLoader(train_dataset, batch_size=25, shuffle=True)
+        doe_estimator = DoeEstimator(1, args.hidden_features, 4)
+        trainer = L.Trainer(max_epochs=50, default_root_dir=args.o)
+        trainer.fit(model=doe_estimator, train_dataloaders=train_loader)
+
+        mi = doe_estimator.estimate_mutual_information(*validation_dataset.tensors)
+
+        return pl.DataFrame(
+            {
+                "step": np.arange(mi.shape[-1]) + 1,
+                "mean": mi.cumsum(1).mean(0).numpy(),
+                "std": mi.cumsum(1).std(0).numpy(),
+                "stderr": mi.cumsum(1).std(0).numpy() / np.sqrt(mi.shape[0]),
+                "count": mi.shape[0],
+            }
+        )
+    elif args.estimator == "InfoNCE":
+        from torch.utils.data import DataLoader, TensorDataset
+        import lightning as L
+        from ml_pws.models.contrastive_mi import ContrastiveEstimator
+
+        train_dataset = TensorDataset(s, x)
+        validation_dataset = TensorDataset(val_s, val_x)
+
+        lengths = np.concat([np.arange(1, 10, 2), np.arange(10, args.length + 1, 10)])
+        mi = np.zeros(len(lengths))
+
+        for i, length in enumerate(lengths):
+            train_loader = DataLoader(
+                TensorDataset(*train_dataset[:, :length]), batch_size=50, shuffle=True
+            )
+            val_loader = DataLoader(
+                TensorDataset(*validation_dataset[:, :length]), batch_size=100
+            )
+
+            contrastive_estimator = ContrastiveEstimator(1, args.hidden_features, 4)
+            trainer = L.Trainer(max_epochs=10, default_root_dir=args.o)
+            trainer.fit(
+                model=contrastive_estimator,
+                train_dataloaders=train_loader,
+                val_dataloaders=val_loader,
+            )
+
+            size = args.num_pairs
+            test_data = validation_dataset[:size, :length]
+            with torch.no_grad():
+                mi[i] = np.log(size) - contrastive_estimator(*test_data)
+
+        return pl.DataFrame({"step": lengths, "mean": mi, "count": args.num_pairs})
+
+
 def main():
     logging.set_verbosity(logging.INFO)
 
     parser = argparse.ArgumentParser(
-        description="Run a ML-PWS with AR(p) input and nonlinear output."
+        description="Run a ML-PWS with AR(p) input and nonlinear output.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
         "--ar_coeffs",
@@ -83,25 +177,25 @@ def main():
         "--ar_std",
         type=float,
         default=0.2,
-        help="Noise strength of AR model (default 0.2).",
+        help="Noise strength of AR model.",
     )
     parser.add_argument(
         "--gain",
         type=float,
         default=10.0,
-        help="Gain of output model (default 10.0).",
+        help="Gain of output model.",
     )
     parser.add_argument(
         "--decay",
         type=float,
         default=0.2,
-        help="Decay of output model (default 0.2).",
+        help="Decay of output model.",
     )
     parser.add_argument(
         "--output_noise",
         type=float,
         default=0.2,
-        help="Output noise strength (default 0.2).",
+        help="Output noise strength.",
     )
     parser.add_argument(
         "-o",
@@ -145,18 +239,17 @@ def main():
         default=0,
         help="Random seed",
     )
-    parser.add_argument("--ground_truth", action="store_true", default=False)
+    parser.add_argument("--estimator", choices=["ML-PWS", "PWS", "DoE", "InfoNCE"])
 
     args = parser.parse_args()
 
-    key = random.key(args.seed)
     args.o.mkdir(parents=True)
     result_path = args.o / "result.csv"
 
     parameters = {
         "run_info": {
             "start_time": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            "hostname": socket.gethostname()
+            "hostname": socket.gethostname(),
         },
         "ar_coeffs": args.ar_coeffs,
         "ar_std": args.ar_std,
@@ -171,42 +264,48 @@ def main():
         "num_pairs": args.num_pairs,
         "length": args.length,
         "seed": args.seed,
-        "ground_truth": args.ground_truth,
+        "estimator": args.estimator,
     }
 
     parameter_file_path = args.o / "parameters.json"
     with open(parameter_file_path, "w") as f:
         json.dump(parameters, f, indent=4)
 
-    k1, k2 = random.split(key)
-    seed1, seed2 = random.randint(k1, 2, 0, 2**31 - 1)
+    rng = np.random.default_rng(args.seed)
+
+    from ml_pws.data.nonlinear_dataset import generate_nonlinear_data
+
     s, x = generate_nonlinear_data(
         num_pairs=args.num_pairs,
         length=args.length,
         coeffs=args.ar_coeffs,
+        ar_noise=args.ar_std,
         gain=args.gain,
         decay=args.decay,
         noise=args.output_noise,
-        seed=int(seed1),
+        seed=int(rng.integers(0, 2**31 - 1)),
     )
     val_s, val_x = generate_nonlinear_data(
         num_pairs=args.num_pairs,
         length=args.length,
         coeffs=args.ar_coeffs,
+        ar_noise=args.ar_std,
         gain=args.gain,
         decay=args.decay,
         noise=args.output_noise,
-        seed=int(seed2),
+        seed=int(rng.integers(0, 2**31 - 1)),
     )
 
+    input_data = {"train_s": s, "train_x": x, "val_s": val_s, "val_x": val_x}
+    torch.save(input_data, args.o / "input_data.pth")
+
     result = run_simulation(
-        jnp.asarray(s),
-        jnp.asarray(x),
-        jnp.asarray(val_s),
-        jnp.asarray(val_x),
+        s,
+        x,
+        val_s,
+        val_x,
         args,
-        ground_truth=args.ground_truth,
-        key=k2,
+        seed=int(rng.integers(0, 2**31 - 1)),
     )
 
     result.write_csv(args.o / "result.csv")
