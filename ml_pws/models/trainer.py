@@ -15,7 +15,7 @@ class CombinedModel(nnx.Module):
 
     def importance_weight(self, x, reduction="sum"):
         s = jnp.empty_like(x)
-        logq_s, preds = self.backward(s, x)
+        logq_s, preds = self.backward(x)
         logp_s = self.prior(preds)
         logp_x_given_s = self.forward(preds, x)
         if reduction == "sum":
@@ -23,9 +23,10 @@ class CombinedModel(nnx.Module):
         else:
             return logp_s + logp_x_given_s - logq_s
 
-    def elbo(self, x, num_samples=1, reduction="sum"):
+    def elbo(self, x, reduction="sum"):
         inner = lambda mod, x: mod.importance_weight(x, reduction)
-        return nnx.vmap(inner, in_axes=(None, None), out_axes=1, axis_size=num_samples)(
+        state_axes = nnx.StateAxes({"default": 0, ...: None})
+        return nnx.vmap(inner, in_axes=(state_axes, None), out_axes=1)(
             self, x
         )
 
@@ -34,18 +35,20 @@ class CombinedModel(nnx.Module):
         return self.forward(s, x)
 
     @nnx.jit(static_argnames="N")
-    def marginal_probability(self, x, N=2**14):
+    def marginal_probability(self, x, N=2**12):
         x = jnp.reshape(x, (-1, x.shape[-1]))
 
         def log_p(mod, x):
             # shape (1, N, length)
-            log_weights = mod.elbo(jnp.expand_dims(x, 0), num_samples=N, reduction=None)
+            log_weights = mod.elbo(jnp.expand_dims(x, 0), reduction=None)
             ess = 1 / jnp.sum(jax.nn.softmax(log_weights.sum(-1), axis=1) ** 2) / N
+            # shape (1, length)
             logp = jax.nn.logsumexp(log_weights, axis=1) - jnp.log(N)
             return jnp.squeeze(logp, 0), ess
 
-        logp, ess = nnx.scan(log_p, in_axes=(None, 0), out_axes=0)(self, x)
-        return logp, ess
+        with nnx.split_rngs(self.backward, splits=N):
+            logp, ess = nnx.scan(log_p, in_axes=(None, 0), out_axes=0)(self, x)
+            return logp, ess
 
 
 class Trainer:
@@ -62,10 +65,12 @@ class Trainer:
         return jnp.mean(loss), {"loss": loss}
 
     @staticmethod
-    def backward_loss(model, x, subsample=1):
-        elbo = model.elbo(x, num_samples=subsample)
+    def backward_loss(model, x, subsample):
+        # shape: (batch_size, subsample)
+        elbo = model.elbo(x, reduction="sum")
         loss = -jnp.mean(elbo)
-        return loss, {"elbo": elbo}
+        ess = 1 / (jax.nn.softmax(elbo, 1) ** 2).sum(1) / subsample
+        return loss, {"elbo": elbo.mean(-1), "ess": ess}
 
     def create_functions(self):
         def train_step_forward(model, optimizer, s_batch, x_batch):
@@ -76,13 +81,13 @@ class Trainer:
 
         self.train_step_forward = nnx.jit(train_step_forward)
 
-        def train_step_backward(model, optimizer, x, subsample=1):
+        def train_step_backward(model, optimizer, x, subsample):
             grad_fn = nnx.value_and_grad(
                 self.backward_loss,
                 argnums=nnx.DiffState(0, optimizer.wrt),
                 has_aux=True,
             )
-            (loss, metrics), grads = grad_fn(model, x, subsample)
+            (loss, metrics), grads = grad_fn(model, x, subsample=subsample)
             optimizer.update(grads=grads)
             return loss, metrics
 
@@ -133,12 +138,17 @@ class Trainer:
         backward_filter = nnx.All(nnx.Param, nnx.PathContains("backward"))
 
         schedule = optax.exponential_decay(
-            learning_rate, num_steps * len(range(0, num_samples, batch_size)), 0.5
+            learning_rate, num_steps * len(range(0, num_samples, batch_size)), 0.1
         )
 
-        optimizer = nnx.Optimizer(self.model, optax.adamw(schedule), backward_filter)
+        optimizer = nnx.Optimizer(
+            self.model, optax.adamw(schedule), backward_filter
+        )
 
-        AverageLoss = metrics.Average.from_output("loss")
+        BackwardsMetrics = metrics.Collection.create(
+            loss=metrics.Average.from_output("loss"),
+            ess=metrics.Average.from_output("ess"),
+        )
         writer = metric_writers.create_default_writer(self.logdir / "Backward")
 
         for epoch in range(num_steps):
@@ -146,19 +156,19 @@ class Trainer:
             perm = random.permutation(epoch_key, num_samples)
             x_shuffle = self.x[perm]
 
-            average_loss = AverageLoss.empty()
+            backwards_metrics = BackwardsMetrics.empty()
             for j in range(0, num_samples, batch_size):
                 x_batch = x_shuffle[j : j + batch_size]
-                loss, train_metrics = self.train_step_backward(
-                    self.model, optimizer, x_batch, subsample=subsample
+                with nnx.split_rngs(self.model.backward, splits=subsample):
+                    loss, train_metrics = self.train_step_backward(
+                        self.model, optimizer, x_batch, subsample=subsample
+                    )
+                backwards_metrics = backwards_metrics.merge(
+                    BackwardsMetrics.single_from_model_output(
+                        loss=-train_metrics["elbo"], ess=train_metrics["ess"]
+                    )
                 )
-                average_loss = average_loss.merge(
-                    AverageLoss.from_model_output(loss=-train_metrics["elbo"])
-                )
-            scalars = {
-                "loss": average_loss.compute(),
-                "learning rate": schedule(optimizer.step.value),
-            }
+            scalars = backwards_metrics.compute()
             writer.write_scalars(epoch + 1, scalars)
 
     def mutual_information(self, s: jax.Array, x: jax.Array):

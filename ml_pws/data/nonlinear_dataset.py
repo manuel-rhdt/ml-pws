@@ -156,10 +156,10 @@ class LogisticModel:
 
 
 def generate_nonlinear_data(
-    num_pairs=1000, length=10, seed=0, order=3, coeffs=generate_stable_ar_coefficients, gain=10.0, decay=0.2, noise=0.2
+    num_pairs=1000, length=10, seed=0, order=3, coeffs=generate_stable_ar_coefficients, ar_noise=0.2, gain=10.0, decay=0.2, noise=0.2
 ):
     n = order
-    ar_model = ARModel(n, init_coeffs=coeffs)
+    ar_model = ARModel(n, noise_std=ar_noise, init_coeffs=coeffs)
 
     initial_values = torch.zeros(num_pairs, n)
     s_trajs = ar_model.sample(initial_values, length, seed=seed+1)

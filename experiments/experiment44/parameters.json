@@ -1,0 +1,24 @@
+{
+    "run_info": {
+        "start_time": "2025-08-18T12:53:41.540776+00:00",
+        "hostname": "cluster-new.hollandia.amolf.nl"
+    },
+    "ar_coeffs": [
+        0.5,
+        -0.3,
+        0.2
+    ],
+    "ar_std": 1.0,
+    "gain": 1.0,
+    "decay": 0.2,
+    "output_noise": 0.2,
+    "output_directory": "/data/clusterusers/reinhardt/containerhome/ml-pws/experiments/experiment44",
+    "result_path": "/data/clusterusers/reinhardt/containerhome/ml-pws/experiments/experiment44/result.csv",
+    "forward_epochs": 500,
+    "backward_epochs": 100,
+    "hidden_features": 64,
+    "num_pairs": 1000,
+    "length": 50,
+    "seed": 0,
+    "estimator": "ML-PWS"
+}
