@@ -29,14 +29,14 @@ def pws_simulate(
     comb_model = CombinedModel(
         prior=input_model,
         forward=output_model,
-        backward=VariationalRnn(args.hidden_features, 8, 2, rngs=rngs),
+        backward=VariationalRnn(args.hidden_features, 4, 2, rngs=rngs),
     )
 
     k1, k2 = random.split(random.key(args.seed))
-    trainer = Trainer(comb_model, s, x, args.o / "metrics")
+    trainer = Trainer(comb_model, s, x, val_s, val_x, args.o / "metrics")
     if train_forward_model:
         trainer.train_forward_model(k1, args.forward_epochs)
-    trainer.train_backward_model(k2, args.backward_epochs, subsample=16, learning_rate=1e-2)
+    trainer.train_backward_model(k2, args.backward_epochs, batch_size=32, subsample=1, learning_rate=5e-3)
 
     path_mi, ess = trainer.mutual_information(val_s, val_x)
     path_mi = np.asarray(path_mi)
@@ -62,11 +62,12 @@ def run_simulation(s, x, val_s, val_x, args, seed=0):
         from jax import numpy as jnp
         from flax import nnx
         from ml_pws.models.ar_model import ARModel
-        from ml_pws.models.predictive_rnn import ConvolutionalAutoregressiveModel
+        from ml_pws.models.predictive_rnn import ConvolutionalAutoregressiveModel, PredictiveRnn
 
         rngs = nnx.Rngs(seed)
         input_model = ARModel(coefficients=args.ar_coeffs, noise_std=args.ar_std)
-        output_model = ConvolutionalAutoregressiveModel(1, 16, 8, rngs=rngs)
+        # output_model = ConvolutionalAutoregressiveModel(3, 8, 4, rngs=rngs)
+        output_model = PredictiveRnn(args.hidden_features, rngs=rngs)
         return pws_simulate(
             jnp.array(s),
             jnp.array(x),
