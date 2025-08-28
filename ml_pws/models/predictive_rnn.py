@@ -16,30 +16,35 @@ def shift_right(x, axis=1):
 class PredictiveCell(nnx.Module):
     def __init__(self, hidden_size: int, rngs: nnx.Rngs):
         self.rngs = rngs
-        self.cell = nnx.GRUCell(2, hidden_size, rngs=rngs)
+        self.features = nnx.Linear(2, hidden_size, rngs=rngs)
+        # self.dropout = nnx.Dropout(0.5, rngs=rngs)
+        self.cell = nnx.LSTMCell(hidden_size, hidden_size, rngs=rngs)
         self.dense = nnx.Linear(hidden_size, 2, rngs=rngs)
 
     def __call__(self, carry, s, x, generate=True):
-        cell_state, prev_prediction = carry
-        if generate:
-            x = jnp.expand_dims(prev_prediction, -1)
+        cell_state, x_prev = carry
 
-        cell_state, y = self.cell(cell_state, jnp.concat((s, x), axis=-1))
+        y = self.features(jnp.stack((s, x_prev), axis=-1))
+        # y = self.dropout(nnx.relu(y))
+        cell_state, y = self.cell(cell_state, y)
         y = self.dense(y)
         mean, log_var = (jnp.squeeze(arr, -1) for arr in jnp.split(y, 2, axis=-1))
-
+        scale = jnp.exp(log_var / 2)
         if not generate:
-            prediction = None
+            logp = jax.scipy.stats.norm.logpdf(x, loc=mean, scale=scale)
+            return (cell_state, x), logp
         else:
             rng = self.rngs["generate"]
-            prediction = mean + random.normal(rng(), shape=log_var.shape) * jnp.exp(
-                log_var / 2
-            )
-        return (cell_state, prediction), ((mean, log_var), prediction)
+            prediction = mean + random.normal(rng(), shape=log_var.shape) * scale
+            logp = jax.scipy.stats.norm.logpdf(prediction, loc=mean, scale=scale)
+            return (cell_state, prediction), (logp, prediction)
 
-    def initial_state(self, batch_size: int, generate=True):
+    def initialize_carry(self, shape, *, key=None):
+        return self.initial_state(shape[0])
+
+    def initial_state(self, batch_size: int):
         cell_state = self.cell.initialize_carry((batch_size, 2), rngs=self.rngs)
-        initial_prediction = jnp.zeros(batch_size) if generate else None
+        initial_prediction = jnp.zeros(batch_size)
         return (cell_state, initial_prediction)
 
     @property
@@ -51,7 +56,7 @@ class PredictiveRnn(nnx.Module):
     def __init__(self, hidden_size: int, rngs: nnx.Rngs):
         self.cell = PredictiveCell(hidden_size, rngs)
 
-    def __call__(self, s, x, generate=False):
+    def __call__(self, s, x, *, carry=None, generate=False):
         s = jnp.expand_dims(s, -1)  # (batch, time, features=1)
         x = jnp.expand_dims(x, -1)  # (batch, time, features=1)
 
@@ -62,7 +67,9 @@ class PredictiveRnn(nnx.Module):
         s, x = jnp.broadcast_arrays(s, x)
 
         scan_fn = lambda cell, carry, s, x: cell(carry, s, x, generate)
-        carry = self.cell.initial_state(x.shape[0], generate)
+
+        if carry is None:
+            carry = self.cell.initial_state(x.shape[0], generate)
 
         time_axis = -2
         state_axes = iteration.StateAxes({...: iteration.Carry})

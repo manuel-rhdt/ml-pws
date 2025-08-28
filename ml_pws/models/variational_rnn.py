@@ -64,28 +64,69 @@ class CouplingTransform(nnx.Module):
         return (log_scale + log_jac, prediction)
 
 
-class DecoderCell(nnx.RNNCellBase):
+class AffineTransform(nnx.Module):
+    def __init__(self, in_features: int, *, rngs: nnx.Rngs):
+        self.shift = nnx.Linear(in_features, 1, rngs=rngs)
+        self.log_scale = nnx.Linear(in_features, 1, rngs=rngs)
+
+    def __call__(self, params, epsilon):
+        shift = jnp.squeeze(self.shift(params), -1)
+        log_scale = jnp.squeeze(self.log_scale(params), -1)
+
+        prediction = shift + epsilon * jnp.exp(log_scale)
+        log_jac = -log_scale
+
+        return log_jac, prediction
+
+
+class FlowRNNCell(nnx.RNNCellBase):
+    """An autoregressive inference cell using a normalizing flow to model the posterior.
+
+    This cell approximates the posterior distribution P(s|x) for a given generative model.
+    It uses an RNN to predict the parameters for a normalizing flow, which transforms
+    a simpler base distribution into the target posterior.
+    """
+
     def __init__(
         self,
-        in_features: int,
         hidden_size: int,
         rngs: nnx.Rngs,
-        mixture_components: int = 5,
     ):
-        self.cell = nnx.GRUCell(in_features, hidden_size, rngs=rngs)
+        self.linear1 = nnx.Linear(1, hidden_size, rngs=rngs)
+        self.linear2 = nnx.Linear(hidden_size, hidden_size, rngs=rngs)
+        self.cell = nnx.LSTMCell(hidden_size + 1, hidden_size, rngs=rngs)
         self.cell.rngs = None
-        self.transform = CouplingTransform(hidden_size, mixture_components, rngs=rngs)
+        # self.transform = CouplingTransform(hidden_size, mixture_components, rngs=rngs)
+        self.transform = AffineTransform(hidden_size, rngs=rngs)
 
-    def __call__(self, carry, input):
+    def __call__(self, carry, input: jax.Array):
+        """Processes one time step of the autoregressive inference.
+
+        Args:
+            carry: The RNN state and the previous time step's prediction.
+            input: A `(N, 2)` array containing [epsilon_t, x_t], where epsilon_t is
+                   a sample from the base distribution and x_t is the input
+                   from the generative model.
+
+        Returns:
+            A tuple containing the updated state and the model's output.
+        """
         rnn_state, last_prediction = carry
-        epsilon = input[..., 0]
-        context = input[..., 1:]
+        s = input[..., 0]
+        x = input[..., 1:]
+
+        # Condition the RNN on the current input `x`.
+        context = self.linear2(nnx.tanh(self.linear1(x)))
         y = jnp.concatenate([jnp.expand_dims(last_prediction, -1), context], axis=-1)
+
+        # The RNN predicts the parameters for the normalizing flow transformation.
         rnn_state, y = self.cell(rnn_state, y)
-        log_jac, prediction = self.transform(y, epsilon)
+        log_jac, prediction = self.transform(y, s)
         return (rnn_state, prediction), (log_jac, prediction)
 
-    def initialize_carry(self, input_shape: tuple[int, ...], rngs: nnx.Rngs | None = None):
+    def initialize_carry(
+        self, input_shape: tuple[int, ...], rngs: nnx.Rngs | None = None
+    ):
         batch_size = input_shape[0]
         cell_state = self.cell.initialize_carry(input_shape, rngs)
         initial_prediction = jnp.zeros(batch_size)
@@ -97,43 +138,36 @@ class DecoderCell(nnx.RNNCellBase):
 
 
 class VariationalRnn(nnx.Module):
-    def __init__(self, hidden_size: int, mixture_components: int, num_layers: int, rngs: nnx.Rngs):
-        self.rngs = rngs
-        self.encoder_x = nnx.RNN(
-            nnx.SimpleCell(1, hidden_size, rngs=rngs), reverse=True
-        )
-
+    def __init__(
+        self, hidden_size: int, mixture_components: int, num_layers: int, rngs: nnx.Rngs
+    ):
         @nnx.split_rngs(splits=num_layers)
         @nnx.vmap(axis_size=num_layers)
         def create_block(rngs: nnx.Rngs):
             return nnx.RNN(
-                DecoderCell(
-                    1 + hidden_size,
+                FlowRNNCell(
                     hidden_size,
-                    mixture_components=mixture_components,
                     rngs=rngs,
                 ),
-                rngs=False
+                rngs=False,
             )
+
         self.decoder_rnn = create_block(rngs)
-        self.rngs = rngs
 
     # generate new sequence conditional on x
-    def __call__(self, x: jax.Array):
+    def __call__(self, s: jax.Array, x: jax.Array):
         # Make input tensor of shape [batch_size, seq_length, 1]
+        s = s.reshape((-1, s.shape[-1]) + (1,))
         x = x.reshape((-1, x.shape[-1]) + (1,))
 
-        # apply reverse rnn to x
-        h_x = self.encoder_x(x)
-
-        epsilon = random.logistic(self.rngs(), shape=x.shape[:-1])
-        logp = jax.scipy.stats.logistic.logpdf(epsilon)
+        epsilon = jnp.squeeze(s, -1)
+        logp = jnp.zeros_like(epsilon)
 
         @nnx.scan
         def scan_fn(carry, rnn_block: nnx.RNN):
             logp, epsilon = carry
-            rnn_input = jnp.concatenate((jnp.expand_dims(epsilon, -1), h_x), axis=-1)
-            (log_jac, preds) = rnn_block(rnn_input, return_carry=False, rngs=nnx.Rngs(0))
+            rnn_input = jnp.concatenate((jnp.expand_dims(epsilon, -1), x), axis=-1)
+            log_jac, preds = rnn_block(rnn_input, return_carry=False, rngs=nnx.Rngs(0))
             return (logp - log_jac, preds), None
 
         (logp, preds), _ = scan_fn((logp, epsilon), self.decoder_rnn)
@@ -146,6 +180,22 @@ def shift_right(x, axis=1):
     ind = [slice(None)] * len(x.shape)
     ind[axis] = slice(-1)
     return jnp.pad(x, pad_widths)[tuple(ind)]
+
+
+class ConditionalAutoregressiveFlow(nnx.Module):
+    def __init__(
+        self, hidden_size: int, mixture_components: int, num_layers: int, rngs: nnx.Rngs
+    ):
+        self.rngs = rngs
+        self.encoder_x = nnx.RNN(nnx.LSTMCell(1, hidden_size, rngs=rngs), reverse=True)
+
+    # generate new sequence conditional on x
+    def __call__(self, s: jax.Array, x: jax.Array):
+        # Make input tensors of shape [batch_size, seq_length, 1]
+        s = s.reshape((-1, s.shape[-1]) + (1,))
+        x = x.reshape((-1, x.shape[-1]) + (1,))
+
+        context = self.encoder_x(x)
 
 
 class IAFBlock(nnx.Module):
@@ -189,13 +239,7 @@ class IAF(nnx.Module):
     ):
         self.rngs = rngs
         self.encoder_x = nnx.RNN(
-            nnx.GRUCell(1, hidden_features, rngs=rngs), reverse=True
-        )
-        self.initial_loc = nnx.Linear(
-            in_features=hidden_features, out_features=1, rngs=rngs
-        )
-        self.initial_log_scale = nnx.Linear(
-            in_features=hidden_features, out_features=1, rngs=rngs
+            nnx.LSTMCell(1, hidden_features, rngs=rngs), reverse=True
         )
 
         @nnx.split_rngs(splits=depth)
@@ -205,23 +249,23 @@ class IAF(nnx.Module):
 
         self.decoder = create_block(rngs)
 
-    def __call__(self, s, x, rngs=None):
+    def __call__(self, s, x):
         # s, x: Make input tensors of shape [batch_size, seq_length, 1]
         s = s.reshape((-1, s.shape[-1]) + (1,))
         x = x.reshape((-1, x.shape[-1]) + (1,))
 
-        rngs = self.rngs if rngs is None else rngs
-
         # apply reverse rnn to x
         h_x = self.encoder_x(x)
-        mu = self.initial_loc(h_x)
-        log_sigma = self.initial_log_scale(h_x)
 
-        eps = random.normal(rngs(), s.shape)
-        z = jnp.exp(log_sigma) * eps + mu
-        logp = -jnp.sum(log_sigma + 0.5 * eps**2 + 0.5 * jnp.log(2 * jnp.pi), axis=-2)
+        eps = s
+        logp = jnp.zeros_like(eps)
 
         h_x = jnp.broadcast_to(h_x, s.shape[:-1] + (h_x.shape[-1],))
-        result, _ = self.decoder((logp, z), h_x)
+
+        @nnx.scan
+        def scan_fn(carry, iaf_block: IAFBlock):
+            return iaf_block(carry, h_x)
+
+        result, _ = scan_fn((logp, eps), self.decoder)
 
         return jax.tree_util.tree_map(lambda x: jnp.squeeze(x, -1), result)
