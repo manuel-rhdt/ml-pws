@@ -16,42 +16,41 @@ def pws_simulate(
     x,
     val_s,
     val_x,
-    input_model,
-    output_model,
-    train_forward_model=True,
+    input_cell,
+    variational_cell,
+    output_cell,
+    *,
+    optimize_forward=True,
     args=None,
     rngs=None,
 ):
     from jax import random
-    from ml_pws.models.variational_rnn import VariationalRnn
-    from ml_pws.models.trainer import CombinedModel, Trainer
-
-    comb_model = CombinedModel(
-        prior=input_model,
-        forward=output_model,
-        backward=VariationalRnn(args.hidden_features, 4, 2, rngs=rngs),
+    from ml_pws.models.smc_estimator import (
+        SMCEstimator,
+        train_forward_model,
+        train_backward_model,
+        estimate_mi,
     )
 
-    k1, k2 = random.split(random.key(args.seed))
-    trainer = Trainer(comb_model, s, x, val_s, val_x, args.o / "metrics")
-    if train_forward_model:
-        trainer.train_forward_model(k1, args.forward_epochs)
-    trainer.train_backward_model(k2, args.backward_epochs, batch_size=32, subsample=1, learning_rate=5e-3)
+    smc_estimator = SMCEstimator(input_cell, variational_cell, output_cell, rngs=rngs)
 
-    path_mi, ess = trainer.mutual_information(val_s, val_x)
-    path_mi = np.asarray(path_mi)
-    ess = np.asarray(ess)
+    k1, k2 = random.split(random.key(args.seed))
+    if optimize_forward:
+        log = train_forward_model(
+            smc_estimator, s, x, num_epochs=args.forward_epochs, rng_key=k1
+        )
+        log.write_csv(args.o / "forward_training_log.csv")
+    log = train_backward_model(smc_estimator, x, num_epochs=args.backward_epochs)
+    log.write_csv(args.o / "backward_training_log.csv")
+
+    result = estimate_mi(smc_estimator, val_s, val_x)
 
     # get summary statistics
-    df = pl.DataFrame(
-        {
-            "step": 1 + np.arange(path_mi.shape[1]),
-            "mean": path_mi.mean(0),
-            "std": path_mi.std(0),
-            "stderr": path_mi.std(0) / np.sqrt(path_mi.shape[0]),
-            "count": path_mi.shape[0],
-            "ess": ess.mean(0),
-        }
+    df = result.group_by("step", maintain_order=True).agg(
+        (pl.col("log_conditional") - pl.col("log_marginal")).mean().alias("mean"),
+        pl.col("ess").mean(),
+        pl.col("ess").count().alias("count"),
+        pl.col("resample_flags").mean().alias("resample_fraction"),
     )
 
     return df
@@ -61,34 +60,42 @@ def run_simulation(s, x, val_s, val_x, args, seed=0):
     if args.estimator == "ML-PWS":
         from jax import numpy as jnp
         from flax import nnx
-        from ml_pws.models.ar_model import ARModel
-        from ml_pws.models.predictive_rnn import ConvolutionalAutoregressiveModel, PredictiveRnn
+        from ml_pws.models.ar_model import ARCell
+        from ml_pws.models.predictive_rnn import PredictiveCell
+        from ml_pws.models.variational_rnn import FlowRNNCell
 
         rngs = nnx.Rngs(seed)
-        input_model = ARModel(coefficients=args.ar_coeffs, noise_std=args.ar_std)
-        # output_model = ConvolutionalAutoregressiveModel(3, 8, 4, rngs=rngs)
-        output_model = PredictiveRnn(args.hidden_features, rngs=rngs)
+        input_model = ARCell(
+            coefficients=args.ar_coeffs, noise_std=args.ar_std, rngs=rngs
+        )
+        variational_model = FlowRNNCell(16, rngs=rngs)
+        output_model = PredictiveCell(args.hidden_features, rngs=rngs)
         return pws_simulate(
             jnp.array(s),
             jnp.array(x),
             jnp.array(val_s),
             jnp.array(val_x),
             input_model,
+            variational_model,
             output_model,
-            train_forward_model=True,
+            optimize_forward=True,
             args=args,
             rngs=rngs,
         )
     elif args.estimator == "PWS":
         import jax.numpy as jnp
         from flax import nnx
-        from ml_pws.models.ar_model import ARModel
-        from ml_pws.models.logistic_model import LogisticModel
+        from ml_pws.models.ar_model import ARCell
+        from ml_pws.models.variational_rnn import FlowRNNCell
+        from ml_pws.models.logistic_model import LogisticCell
 
         rngs = nnx.Rngs(seed)
-        input_model = ARModel(coefficients=args.ar_coeffs, noise_std=args.ar_std)
-        output_model = LogisticModel(
-            gain=args.gain, decay=args.decay, noise=args.output_noise, rngs=rngs
+        input_model = ARCell(
+            coefficients=args.ar_coeffs, noise_std=args.ar_std, rngs=rngs
+        )
+        variational_model = FlowRNNCell(16, rngs=rngs)
+        output_model = LogisticCell(
+            gain=args.gain, decay=args.decay, noise=args.output_noise
         )
         return pws_simulate(
             jnp.array(s),
@@ -96,8 +103,9 @@ def run_simulation(s, x, val_s, val_x, args, seed=0):
             jnp.array(val_s),
             jnp.array(val_x),
             input_model,
+            variational_model,
             output_model,
-            train_forward_model=False,
+            optimize_forward=False,
             args=args,
             rngs=rngs,
         )
@@ -207,7 +215,7 @@ def main():
     parser.add_argument(
         "--forward_epochs",
         type=int,
-        default=500,
+        default=100,
         help="Number of training epochs for the forward model.",
     )
     parser.add_argument(
