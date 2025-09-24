@@ -37,48 +37,13 @@ uv pip install -e .
 
 ## Usage
 
-The package provides several scripts for different types of analysis:
+The package provides several scripts to recreate the figures from the paper:
 
-1. Generate example datasets:
+1. Regenerate figure datasets:
 ```bash
 make data
 ```
 
-2. Run different estimators:
-```bash
-# Run PWS estimator
-make experiments/pws
-
-# Run ML-PWS estimator
-make experiments/mlpws
-
-# Run InfoNCE estimator
-make experiments/infonce
-
-# Run DoE estimator
-make experiments/doe
-```
-
-3. For custom analysis, you can use the Python API:
-```python
-from ml_pws.data.nonlinear_dataset import generate_nonlinear_data
-from ml_pws.models import SMCEstimator
-
-# Generate data
-s, x = generate_nonlinear_data(
-    num_pairs=1000,
-    length=50,
-    coeffs=[0.5, -0.2],
-    ar_noise=1.0,
-    gain=1.0,
-    decay=0.5,
-    noise=0.2
-)
-
-# Create and train estimator
-estimator = SMCEstimator()
-# ... train and use the estimator
-```
 
 ## Project Structure
 
