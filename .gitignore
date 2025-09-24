@@ -3,6 +3,8 @@
 **/lightning_logs
 notebooks/checkpoints
 metrics/
+# pytorch files
+*.pth
 
 # Don't track PBS logs
 *.ER
