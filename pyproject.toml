@@ -8,6 +8,9 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "clu>=0.0.12",
+    "flax>=0.11.2",
+    "jax>=0.7.2",
+    "matplotlib>=3.10.6",
     "numpy>=2.0.2",
     "polars>=1.33.1",
     "scipy>=1.16.2",
