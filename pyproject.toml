@@ -5,6 +5,10 @@ description = "A short description of the project."
 authors = [{ name = "Manuel Reinhardt" }]
 license = { text = "MIT" }
 readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0.2",
+]
 
 [build-system]
 requires = ["setuptools>=61.0"]

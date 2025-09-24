@@ -2,6 +2,8 @@ import numpy as np
 import polars as pl
 import torch
 
+from scipy import linalg
+
 from absl import logging
 
 import argparse
@@ -9,6 +11,27 @@ from pathlib import Path
 import json
 import datetime
 import socket
+
+
+def logdet_cholesky(matrix):
+    L = linalg.cholesky(matrix, lower=True)
+    return 2.0 * np.sum(np.log(np.diag(L)))
+
+
+def gaussian_mi(s, x):
+    s = s - np.mean(s)
+    x = x - np.mean(x)
+    L = s.shape[-1]
+    data = np.concat((s.T, x.T), axis=0)
+    cov_z = np.cov(data)
+    cov_ss = cov_z[:L, :L]
+    cov_xx = cov_z[L:, L:]
+
+    logdet_ss = logdet_cholesky(cov_ss)
+    logdet_xx = logdet_cholesky(cov_xx)
+    logdet_z = logdet_cholesky(cov_z)
+
+    return 0.5 * (logdet_ss + logdet_xx - logdet_z)
 
 
 def pws_simulate(
@@ -166,6 +189,11 @@ def run_simulation(s, x, val_s, val_x, args, seed=0):
                 mi[i] = np.log(size) - contrastive_estimator(*test_data)
 
         return pl.DataFrame({"step": lengths, "mean": mi, "count": args.num_pairs})
+    elif args.estimator == "Gaussian":
+        mi = gaussian_mi(val_s.numpy(), val_x.numpy())
+        return pl.DataFrame(
+            {"step": [val_s.shape[-1]], "mean": [mi], "count": args.num_pairs}
+        )
 
 
 def main():
@@ -243,15 +271,19 @@ def main():
         help="Length of each training data sequence.",
     )
     parser.add_argument(
+        "--threads", type=int, default=1, help="Number of threads to use (default: 1)"
+    )
+    parser.add_argument(
         "--seed",
         type=int,
         default=0,
         help="Random seed",
     )
-    parser.add_argument("--estimator", choices=["ML-PWS", "PWS", "DoE", "InfoNCE"])
+    parser.add_argument("--estimator", choices=["ML-PWS", "PWS", "DoE", "InfoNCE", "Gaussian"])
 
     args = parser.parse_args()
 
+    torch.set_num_threads(args.threads)
     args.o.mkdir(parents=True)
     result_path = args.o / "result.csv"
 

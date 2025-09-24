@@ -1,3 +1,0 @@
-INFO - model-size-sweep - Running command 'my_main'
-INFO - model-size-sweep - Started run with ID "1"
-INFO - model-size-sweep - Completed after 0:00:58

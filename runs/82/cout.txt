@@ -1,12 +1,0 @@
-INFO - model-size-sweep - Running command 'my_main'
-
-INFO - model-size-sweep - Started run with ID "82"
-
-                                                                                                            Failed to detect content-type automatically for artifact /data/volume_2/ml-pws/models/stochseq_model=GRU_layers=2_hidden=72.pt.
-  5%|█▌                            | 5/100 [08:03<2:02:06, 77.12s/trial, best loss: 0.00019936455646529794]INFO - model-size-sweep - Result: SequenceModel(
-  (rnn): GRU(2, 72, num_layers=2, batch_first=True)
-  (linear): Linear(in_features=73, out_features=2, bias=True)
-)
-
-INFO - model-size-sweep - Completed after 0:01:34
-
