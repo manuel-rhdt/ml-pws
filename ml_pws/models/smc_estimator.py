@@ -221,7 +221,7 @@ def train_forward_model(
     def train_step(smc_estimator, optimizer, s, x):
         grad_fn = nnx.value_and_grad(forward_loss, argnums=diffstate, has_aux=False)
         loss, grads = grad_fn(smc_estimator, s, x)
-        optimizer.update(grads)
+        optimizer.update(smc_estimator, grads)
         return loss
 
     def create_batches(data, batch_size, rng_key):
@@ -266,7 +266,7 @@ def train_backward_model(smc_estimator, train_x, *, num_epochs=200, learning_rat
             SMCEstimator.elbo_loss, argnums=diffstate, has_aux=True
         )
         (loss, metrics), grads = grad_fn(smc_estimator, x)
-        optimizer.update(grads)
+        optimizer.update(smc_estimator, grads)
         return loss, metrics
 
     writer = metric_writers.LoggingWriter()
