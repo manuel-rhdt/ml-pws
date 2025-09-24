@@ -15,11 +15,14 @@ dependencies = [
     "clu>=0.0.12",
     "flax>=0.11.2",
     "jax>=0.7.2",
+    "lightning>=2.5.5",
     "matplotlib>=3.10.6",
     "numpy>=2.0.2",
     "polars>=1.33.1",
     "scipy>=1.16.2",
+    "tensorflow>=2.20.0",
     "torch>=2.8.0",
+    "tqdm>=4.67.1",
 ]
 
 [build-system]
