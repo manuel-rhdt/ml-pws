@@ -1,0 +1,24 @@
+{
+    "run_info": {
+        "start_time": "2025-08-28T14:55:03.822845+00:00",
+        "hostname": "compute4.hollandia.amolf.nl"
+    },
+    "ar_coeffs": [
+        0.5,
+        -0.3,
+        0.2
+    ],
+    "ar_std": 1.0,
+    "gain": 0.2063979,
+    "decay": 0.2,
+    "output_noise": 0.2,
+    "output_directory": "/data/clusterusers/reinhardt/containerhome/ml-pws/experiments/experiments/gain_sweep01/mlpws_gain=0.2063979",
+    "result_path": "/data/clusterusers/reinhardt/containerhome/ml-pws/experiments/experiments/gain_sweep01/mlpws_gain=0.2063979/result.csv",
+    "forward_epochs": 100,
+    "backward_epochs": 100,
+    "hidden_features": 64,
+    "num_pairs": 1000,
+    "length": 50,
+    "seed": 0,
+    "estimator": "ML-PWS"
+}

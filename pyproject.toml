@@ -1,7 +1,12 @@
 [project]
 name = "ml_pws"
 version = "0.1.0"
-description = "A short description of the project."
+description = """
+Machine learning implementation of Path Weight Sampling (PWS) models for time series analysis. 
+This package provides tools for computing the mutual information in sequential data 
+using autoregressive models and Monte Carlo Sampling. Built with JAX and Flax for efficient computation 
+and PyTorch.
+"""
 authors = [{ name = "Manuel Reinhardt" }]
 license = { text = "MIT" }
 readme = "README.md"
