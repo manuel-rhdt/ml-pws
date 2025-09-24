@@ -1,60 +1,22 @@
 .PHONY: data clean lint train
 
-#################################################################################
-# GLOBALS                                                                       #
-#################################################################################
+data: data/example_traj_s.csv data/example_traj_x.csv experiments/pws experiments/mlpws experiments/infonce experiments/doe
 
-PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
-PROFILE = default
-PROJECT_NAME = ml-pws
-PYTHON_INTERPRETER = python3
+data/example_traj_s.csv data/example_traj_x.csv:
+	uv run scripts/01-ar_dataset.py
 
-ifeq (,$(shell which conda))
-HAS_CONDA=False
-else
-HAS_CONDA=True
-endif
+experiments/pws:
+	uv run scripts/05-ar_input_mlpws.py --gain 1.0 --ar_std 1.0 --output_noise 0.2 -o experiments/pws --estimator PWS
 
-#################################################################################
-# COMMANDS                                                                      #
-#################################################################################
+experiments/mlpws:
+	uv run scripts/05-ar_input_mlpws.py --gain 1.0 --ar_std 1.0 --output_noise 0.2 -o experiments/mlpws --estimator ML-PWS
 
-## Make Dataset
-data: data/gaussian_data.pt
+experiments/infonce:
+	uv run scripts/05-ar_input_mlpws.py --gain 1.0 --ar_std 1.0 --output_noise 0.2 --backward_epochs 100 -o experiments/infonce --estimator InfoNCE
 
-## Delete all compiled Python files
-clean:
-	find . -type f -name "*.py[co]" -delete
-	find . -type d -name "__pycache__" -delete
+experiments/doe:
+	uv run scripts/05-ar_input_mlpws.py --gain 1.0 --ar_std 1.0 --output_noise 0.2 --backward_epochs 100 -o experiments/doe --estimator DoE
 
-## Lint using flake8
-lint:
-	flake8 src
-
-## Set up python interpreter environment
-create_environment:
-	conda env create -f environment.yml
-
-STOCH_SEQ_MODELS := GRU LSTM RNN
-.PHONY: $(STOCH_SEQ_MODELS)
-MODEL_PREFIX := model=
-MODEL_ARGS := layers=1_hidden=16
-
-## Train stochastic sequence models
-train: $(STOCH_SEQ_MODELS)
-
-#################################################################################
-# PROJECT RULES                                                                 #
-#################################################################################
-
-data/gaussian_data.pt:
-	$(PYTHON_INTERPRETER) src/data/make_gaussian_dataset.py -o $@
-
-$(STOCH_SEQ_MODELS): %: models/stochseq_model=%_layers=1_hidden=16.pt
-
-models/stochseq_$(MODEL_PREFIX)%_$(MODEL_ARGS).pt : data/gaussian_data.pt
-	$(PYTHON_INTERPRETER) src/models/main.py --model $* -i $< -o $@
 
 #################################################################################
 # Self Documenting Commands                                                     #
