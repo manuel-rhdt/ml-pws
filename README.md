@@ -1,7 +1,7 @@
 # ML-PWS: Machine Learning Implementation of Path Weight Sampling
 
 
-![Static Badge](https://img.shields.io/badge/arXiv-2508.16509-black?link=https%3A%2F%2Farxiv.org%2Fabs%2F2508.16509)
+[![Static Badge](https://img.shields.io/badge/arXiv-2508.16509-black)](https://arxiv.org/abs/2508.16509)
 
 
 ML-PWS is a Python package that implements Path Weight Sampling (PWS) models for time series analysis. It provides tools for computing mutual information in sequential data using autoregressive models and Monte Carlo Sampling, built with JAX, Flax, and PyTorch for efficient computation.
