@@ -14,8 +14,14 @@ ML-PWS is a Python package that implements Path Weight Sampling (PWS) models for
 
 ### Installing with conda
 
+1. Install the conda environment:
 ```bash
 conda env create -f environment.yml
+```
+
+2. Activate the environment
+```bash
+conda activate ml-pws
 ```
 
 ### Installing with uv
@@ -55,7 +61,7 @@ make data
 
 2. Scripts to generate figures are in the `scripts` directory. You can create Figure 1 from the publication using
 ```bash
-python scripts/figure1.py
+make figures
 ```
 which will save the figure in `reports/figures`.
 ![Figure 1](reports/figures/ml_pws_fig_1.png)

@@ -1,4 +1,4 @@
-name: pyenv
+name: ml-pws
 channels:
   - conda-forge
 dependencies:
