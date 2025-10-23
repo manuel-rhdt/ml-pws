@@ -96,4 +96,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Author
 
-Manuel Reinhardt
+Manuel Reinhardt ([@manuel-rhdt](https://github.com/manuel-rhdt))
