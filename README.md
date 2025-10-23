@@ -11,7 +11,12 @@ ML-PWS is a Python package that implements Path Weight Sampling (PWS) models for
 ### Prerequisites
 
 - Python 3.11 or higher
-- [uv](https://github.com/astral-sh/uv) (recommended) for dependency management
+
+### Installing with conda
+
+```bash
+conda env create -f environment.yml
+```
 
 ### Installing with uv
 
@@ -48,6 +53,12 @@ The package provides several scripts to recreate the figures from the paper:
 make data
 ```
 
+2. Scripts to generate figures are in the `scripts` directory. You can create Figure 1 from the publication using
+```bash
+python scripts/figure1.py
+```
+which will save the figure in `reports/figures`.
+![Figure 1](reports/figures/ml_pws_fig_1.png)
 
 ## Project Structure
 
