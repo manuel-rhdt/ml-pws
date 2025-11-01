@@ -1,0 +1,5 @@
+hidden_size: 4
+kernel_size: 20
+model_type: CNN
+n_neurons: 1
+num_layers: 2
