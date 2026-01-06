@@ -213,6 +213,8 @@ The package includes pre-trained models for analyzing Drosophila visual system n
 - **Training**: `scripts/neurons/train_models.py` with real spike train data
 - **Analysis**: Notebooks in `notebooks/06_neuron-data.ipynb` demonstrate MI estimation for biological time-series
 
+**Computing Infrastructure Note**: The neuron models are trained and evaluated on an OpenPBS/MPI cluster on AMOLF infrastructure. The PBS job submission scripts (`scripts/neurons/pbs_train_models.sh`, `scripts/neurons/pbs_estimate_pws.sh`) are included as examples and must be adapted for other computing environments. The scripts use MPI parallelization to distribute model training and PWS estimation across 50 independent neuron models.
+
 This application showcases ML-PWS capability to estimate information transmission rates in experimental neuroscience data by learning neural response models directly from spike recordings.
 
 ## Usage
