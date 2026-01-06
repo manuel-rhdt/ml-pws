@@ -186,7 +186,7 @@ The package also implements baseline estimators for comparison:
 2. **InfoNCE**: Contrastive learning approach (`ml_pws/models/contrastive_mi.py`)
    - Uses Conv1D discriminator network
    - Optimizes noise-contrastive estimation objective
-3. **DoE (Domain of Experts)**: Alternative neural MI estimator
+3. **DoE (Difference of Entropies)**: Alternative neural MI estimator
 
 ## Applications
 
