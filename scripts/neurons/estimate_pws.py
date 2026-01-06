@@ -1,13 +1,17 @@
 """
 Script to perform PWS (Path Weight Sampling) estimation on trained neuron models.
 
-This script loads a trained model file and computes mutual information estimates
+This script loads trained model files and computes mutual information estimates
 using the PWS method with stochastic harmonic oscillator dynamics.
+
+Supports MPI parallelization for processing multiple models in parallel.
 """
 
-import argparse
+import sys
 import json
 from pathlib import Path
+
+from mpi4py import MPI
 
 import numpy as np
 import torch
@@ -107,112 +111,59 @@ def load_model(model_path, n_neurons, hidden_size, num_layers, model_type, kerne
     return model
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Perform PWS estimation on trained neuron models",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    parser.add_argument(
-        "model_path",
-        type=Path,
-        help="Path to trained model checkpoint (.pth file)",
-    )
-    parser.add_argument(
-        "--output",
-        "-o",
-        type=Path,
-        default=None,
-        help="Output JSON file path (default: <model_path>_pws_results.json)",
-    )
-    parser.add_argument(
-        "--n-neurons",
-        type=int,
-        default=1,
-        help="Number of neurons in the model",
-    )
-    parser.add_argument(
-        "--hidden-size",
-        type=int,
-        default=None,
-        help="Hidden size (default: 4 * n_neurons)",
-    )
-    parser.add_argument(
-        "--num-layers",
-        type=int,
-        default=2,
-        help="Number of layers",
-    )
-    parser.add_argument(
-        "--model-type",
-        type=str,
-        choices=["RNN", "CNN"],
-        default="CNN",
-        help="Model architecture type",
-    )
-    parser.add_argument(
-        "--kernel-size",
-        type=int,
-        default=20,
-        help="Kernel size for CNN model",
-    )
-    parser.add_argument(
-        "--N",
-        type=int,
-        default=400,
-        help="Number of trajectories to sample",
-    )
-    parser.add_argument(
-        "--M",
-        type=int,
-        default=2048,
-        help="Number of particles for marginal estimation",
-    )
-    parser.add_argument(
-        "--seq-len",
-        type=int,
-        default=100,
-        help="Sequence length (number of time bins)",
-    )
+def process_model(spec, config):
+    """Process a single model specification.
 
-    args = parser.parse_args()
+    Args:
+        spec: Dictionary with model specification (neuron_id, model_path, output_path)
+        config: Configuration dictionary with PWS parameters
+    """
+    neuron_id = spec["neuron_id"]
+    model_path = Path(spec["model_path"])
+    output_path = Path(spec["output_path"])
 
-    # Set default hidden size
-    if args.hidden_size is None:
-        args.hidden_size = args.n_neurons * 4
+    # Check if output already exists (skip if present)
+    if output_path.exists():
+        print(f"Rank {MPI.COMM_WORLD.Get_rank()}: Neuron {neuron_id} results already exist, skipping")
+        return
 
-    # Set default output path
-    if args.output is None:
-        args.output = args.model_path.parent / f"{args.model_path.stem}_pws_results.json"
+    # Check if model exists
+    if not model_path.exists():
+        print(f"Rank {MPI.COMM_WORLD.Get_rank()}: Warning: Model not found at {model_path}, skipping")
+        return
 
-    print(f"Loading model from {args.model_path}")
+    print(f"Rank {MPI.COMM_WORLD.Get_rank()}: Processing neuron {neuron_id}...")
+
+    # Load model
     model = load_model(
-        args.model_path,
-        n_neurons=args.n_neurons,
-        hidden_size=args.hidden_size,
-        num_layers=args.num_layers,
-        model_type=args.model_type,
-        kernel_size=args.kernel_size if args.model_type == "CNN" else None,
+        model_path,
+        n_neurons=config["n_neurons"],
+        hidden_size=config["hidden_size"],
+        num_layers=config["num_layers"],
+        model_type=config["model_type"],
+        kernel_size=config.get("kernel_size") if config["model_type"] == "CNN" else None,
     )
 
-    print(f"Performing PWS estimation with N={args.N}, M={args.M}")
-    t = torch.arange(args.seq_len) * BIN_WIDTH * SECONDS_PER_UNIT
-    pws_result = pws_estimate(model, t, args.N, args.M)
+    # Perform PWS estimation
+    t = torch.arange(config["seq_len"]) * BIN_WIDTH * SECONDS_PER_UNIT
+    pws_result = pws_estimate(model, t, config["N"], config["M"])
 
     # Compute mutual information
     mi = pws_result[:, 0] - pws_result[:, 1]
 
     # Prepare results dictionary
     results = {
+        "neuron_id": neuron_id,
+        "model_path": str(model_path),
         "args": {
-            "model_path": str(args.model_path),
-            "n_neurons": args.n_neurons,
-            "hidden_size": args.hidden_size,
-            "num_layers": args.num_layers,
-            "model_type": args.model_type,
-            "kernel_size": args.kernel_size,
-            "N": args.N,
-            "M": args.M,
-            "seq_len": args.seq_len,
+            "n_neurons": config["n_neurons"],
+            "hidden_size": config["hidden_size"],
+            "num_layers": config["num_layers"],
+            "model_type": config["model_type"],
+            "kernel_size": config.get("kernel_size"),
+            "N": config["N"],
+            "M": config["M"],
+            "seq_len": config["seq_len"],
         },
         "pws_result": {
             "t": t.tolist(),
@@ -226,13 +177,44 @@ def main():
     }
 
     # Save results
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    with args.output.open("w") as f:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w") as f:
         json.dump(results, f, indent=2)
 
-    print(f"Results saved to {args.output}")
-    print(f"Final MI estimate: {mi.mean(0)[-1].item():.4f} ± {mi.std(0)[-1].item():.4f}")
+    print(f"Rank {MPI.COMM_WORLD.Get_rank()}: Neuron {neuron_id} completed. Final MI: {mi.mean(0)[-1].item():.4f} ± {mi.std(0)[-1].item():.4f}")
 
 
 if __name__ == "__main__":
-    main()
+    # Load configuration
+    if len(sys.argv) != 2:
+        print("Usage: python estimate_pws.py <config_file.json>")
+        sys.exit(1)
+
+    with open(sys.argv[1]) as f:
+        config = json.load(f)
+
+    # Initialize MPI
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    size = comm.Get_size()
+
+    # Get list of models to process
+    models = config["models"]
+
+    # Distribute work across MPI ranks
+    local_models = models[rank::size]
+
+    if rank == 0:
+        print(f"Starting PWS estimation with {size} MPI processes")
+        print(f"Total models: {len(models)}")
+        print(f"Parameters: N={config['N']}, M={config['M']}, seq_len={config['seq_len']}")
+
+    # Process models assigned to this rank
+    for spec in local_models:
+        process_model(spec, config)
+
+    # Wait for all ranks to complete
+    comm.Barrier()
+
+    if rank == 0:
+        print("All PWS estimations completed!")
