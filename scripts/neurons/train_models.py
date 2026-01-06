@@ -382,41 +382,6 @@ def train_model(dataset_path, neurons=[0], name="model"):
     return spike_model
 
 
-def log_probability(model, s, x):
-    model.eval()
-    log_intensity = model(s, x)
-    return -F.poisson_nll_loss(
-        log_intensity, x, log_input=True, full=True, reduction="none"
-    ).sum(-1)
-
-
-def pws_estimate(model, t, N, M):
-    stoch_osc = StochasticHarmonicOscillator()
-    y0 = torch.zeros(N, 2)
-    y = torchsde.sdeint(stoch_osc, y0, t, dt=1 / 60)
-    s_samples = y[:, :, 0]
-    x_samples = model.net.sample(s_samples)
-
-    def pws_samples():
-        log_conditional = log_probability(model.net, s_samples, x_samples).cumsum(0)
-        for i in range(N):
-            y0 = torch.zeros(M, 2)
-            y = torchsde.sdeint(stoch_osc, y0, t, dt=1 / 60)
-            s = y[:, :, 0]
-            logp = log_probability(
-                model.net, s, x_samples[:, [i], :].repeat(1, M, 1)
-            ).cumsum(0)
-            log_marginal = logp.logsumexp(1) - np.log(M)
-            yield torch.stack((log_conditional[:, i], log_marginal))
-
-    with torch.no_grad():
-        samples = torch.stack(list(pws_samples()))
-
-    return samples
-
-
-import os.path
-
 if __name__ == "__main__":
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
@@ -427,35 +392,7 @@ if __name__ == "__main__":
 
     local_models = models[rank::size]
 
-    for spec in local_models: 
+    for spec in local_models:
         neurons = spec["neurons"]
         name = spec["name"]
         model = train_model(dataset_path, neurons, name)
-
-    # t = torch.arange(100) * BIN_WIDTH * SECONDS_PER_UNIT
-
-    # pws_result = pws_estimate(spike_model, t, 400, 2048)
-    # mi = pws_result[:, 0] - pws_result[:, 1]
-
-    # results = {
-    #     "args": {
-    #         "neurons": args.neurons,
-    #         "N": 400,
-    #         "M": 2048,
-    #     },
-    #     "pws_result": {
-    #         "t": t.tolist(),
-    #         "log_conditional": pws_result[:, 0].tolist(),
-    #         "log_marginal": pws_result[:, 1].tolist(),
-    #         "mutual_information": mi.tolist(),
-    #     },
-    # }
-
-    # output_file.parent.mkdir(parents=True, exist_ok=True)
-
-    # # Write to JSON
-    # with output_file.open("w") as f:
-    #     json.dump(results, f, indent=2)
-
-    # print(f"Results saved to {output_file}")
-
