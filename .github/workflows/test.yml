@@ -24,4 +24,5 @@ jobs:
           cache-downloads: true
 
       - name: Run tests
+        shell: micromamba-shell {0}
         run: make test
