@@ -1,4 +1,4 @@
-.PHONY: data figures
+.PHONY: data figures test
 
 data: data/example_traj_s.csv data/example_traj_x.csv experiments/pws experiments/mlpws experiments/infonce experiments/doe
 
@@ -22,3 +22,6 @@ figures: reports/figures/ml_pws_fig_1.png
 
 reports/figures/ml_pws_fig_1.png: data
 	python scripts/figure1.py
+
+test:
+	./tests/test_neurons_scripts.sh
