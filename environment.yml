@@ -8,6 +8,7 @@ dependencies:
   - absl-py=2.3.1=pyhd8ed1ab_0
   - alsa-lib=1.2.14=hb9d3cd8_0
   - aom=3.9.1=hac33072_0
+  - asttokens=3.0.0=pyhd8ed1ab_1
   - blosc=1.21.6=he440d0b_1
   - brotli=1.1.0=hb03c661_4
   - brotli-bin=1.1.0=hb03c661_4
@@ -21,14 +22,19 @@ dependencies:
   - charset-normalizer=3.4.4=pyhd8ed1ab_0
   - chex=0.1.91=pyhd8ed1ab_0
   - colorama=0.4.6=pyhd8ed1ab_1
+  - comm=0.2.3=pyhe01879c_0
   - contourpy=1.3.3=py312hd9148b4_2
   - cpython=3.12.12=py312hd8ed1ab_0
   - cycler=0.12.1=pyhd8ed1ab_1
   - cyrus-sasl=2.1.28=hd9c7081_0
   - dav1d=1.2.1=hd590300_0
   - dbus=1.16.2=h3c4dab8_0
+  - debugpy=1.8.17=py312h8285ef7_0
+  - decorator=5.2.1=pyhd8ed1ab_0
   - double-conversion=3.3.1=h5888daf_0
   - etils=1.12.2=pyhd8ed1ab_0
+  - exceptiongroup=1.3.0=pyhd8ed1ab_0
+  - executing=2.2.1=pyhd8ed1ab_0
   - filelock=3.20.0=pyhd8ed1ab_0
   - flax=0.10.2=pyhd8ed1ab_0
   - font-ttf-dejavu-sans-mono=2.37=hab24e00_0
@@ -53,9 +59,15 @@ dependencies:
   - idna=3.11=pyhd8ed1ab_0
   - importlib-metadata=8.7.0=pyhe01879c_1
   - importlib_resources=6.5.2=pyhd8ed1ab_0
+  - ipykernel=7.0.1=pyha191276_0
+  - ipython=9.6.0=pyhfa0c392_0
+  - ipython_pygments_lexers=1.1.1=pyhd8ed1ab_0
   - jax=0.7.0=pyhd8ed1ab_0
   - jaxlib=0.7.0=cpu_py312h73730d4_1
+  - jedi=0.19.2=pyhd8ed1ab_1
   - jinja2=3.1.6=pyhd8ed1ab_0
+  - jupyter_client=8.6.3=pyhd8ed1ab_1
+  - jupyter_core=5.9.1=pyhc90fa1f_0
   - keyutils=1.6.3=hb9d3cd8_0
   - kiwisolver=1.4.9=py312h0a2e395_1
   - krb5=1.21.3=h659f571_0
@@ -107,6 +119,7 @@ dependencies:
   - libpq=18.0=h3675c94_0
   - libprotobuf=5.29.3=h7460b1f_2
   - libre2-11=2025.06.26=hba17884_0
+  - libsodium=1.0.20=h4ab18f5_0
   - libsqlite=3.50.4=h0c1763c_0
   - libssh2=1.11.1=hcf80075_0
   - libstdcxx=15.2.0=h8f9b012_7
@@ -132,6 +145,7 @@ dependencies:
   - markupsafe=3.0.3=py312h8a5da7c_0
   - matplotlib=3.10.7=py312h7900ff3_0
   - matplotlib-base=3.10.7=py312he3d6523_0
+  - matplotlib-inline=0.2.1=pyhd8ed1ab_0
   - mdurl=0.1.2=pyhd8ed1ab_1
   - mkl=2024.2.2=ha770c72_17
   - ml_dtypes=0.5.1=py312hf79963d_1
@@ -152,14 +166,22 @@ dependencies:
   - optree=0.17.0=py312hd9148b4_1
   - orbax-checkpoint=0.8.0=pyhd8ed1ab_1
   - packaging=25.0=pyh29332c3_1
+  - parso=0.8.5=pyhcf101f3_0
   - pcre2=10.46=h1321c63_0
+  - pexpect=4.9.0=pyhd8ed1ab_1
+  - pickleshare=0.7.5=pyhd8ed1ab_1004
   - pillow=11.3.0=py312h7b42cdd_3
   - pip=25.2=pyh8b19718_0
   - pixman=0.46.4=h54a6638_1
+  - platformdirs=4.5.0=pyhcf101f3_0
   - polars=1.34.0=pyh6a1acc5_0
   - polars-runtime-32=1.34.0=py310hffdcd12_0
+  - prompt-toolkit=3.0.52=pyha770c72_0
   - protobuf=5.29.3=py312h0f4f066_0
+  - psutil=7.1.1=py312h4c3975b_0
   - pthread-stubs=0.4=hb9d3cd8_1002
+  - ptyprocess=0.7.0=pyhd8ed1ab_1
+  - pure_eval=0.2.3=pyhd8ed1ab_1
   - pybind11=2.13.6=pyhc790b64_3
   - pybind11-abi=4=hd8ed1ab_3
   - pybind11-global=2.13.6=pyh217bc35_3
@@ -175,6 +197,7 @@ dependencies:
   - pytorch=2.7.1=cpu_mkl_py312_he6f58a3_102
   - pytorch-lightning=2.5.5=pyh2a12c56_0
   - pyyaml=6.0.3=py312h8a5da7c_0
+  - pyzmq=27.1.0=py312hfb55c3c_0
   - qhull=2020.2=h434a139_5
   - qt6-main=6.9.3=h5c1c036_0
   - rav1e=0.7.1=h8fae777_3
@@ -187,6 +210,7 @@ dependencies:
   - six=1.17.0=pyhe01879c_1
   - sleef=3.9.0=ha0421bc_0
   - snappy=1.2.2=h03e3b7b_0
+  - stack_data=0.6.3=pyhd8ed1ab_1
   - svt-av1=3.1.2=hecca717_0
   - sympy=1.14.0=pyh2585a3b_105
   - tbb=2021.13.0=hb60516a_3
@@ -197,6 +221,7 @@ dependencies:
   - torchsde=0.2.6=pyhff2d567_3
   - tornado=6.5.2=py312h4c3975b_1
   - tqdm=4.67.1=pyhd8ed1ab_1
+  - traitlets=5.14.3=pyhd8ed1ab_1
   - trampoline=0.1.2=pyhd8ed1ab_1
   - typing-extensions=4.15.0=h396c80c_0
   - typing_extensions=4.15.0=pyhcf101f3_0
@@ -204,6 +229,7 @@ dependencies:
   - unicodedata2=16.0.0=py312h4c3975b_1
   - urllib3=2.5.0=pyhd8ed1ab_0
   - wayland=1.24.0=h3e06ad9_0
+  - wcwidth=0.2.14=pyhd8ed1ab_0
   - wheel=0.45.1=pyhd8ed1ab_1
   - xcb-util=0.4.1=h4f16b4b_2
   - xcb-util-cursor=0.1.5=hb9d3cd8_0
@@ -228,11 +254,13 @@ dependencies:
   - xorg-libxtst=1.2.5=hb9d3cd8_3
   - xorg-libxxf86vm=1.1.6=hb9d3cd8_0
   - yaml=0.2.5=h280c20c_3
+  - zeromq=4.3.5=h387f397_9
   - zipp=3.23.0=pyhd8ed1ab_0
   - zstandard=0.25.0=py312h5253ce2_0
   - zstd=1.5.7=hb8e6e7a_2
   - pip:
       - clu==0.0.12
       - ml-collections==1.1.0
+      - mpi4py==4.1.1
       - wrapt==2.0.0
-prefix: /opt/conda/envs/pyenv
+prefix: /data/clusterusers/reinhardt/miniforge3/envs/pyenv
