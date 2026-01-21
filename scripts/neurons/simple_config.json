@@ -1,0 +1,5 @@
+{
+    "dataset_path": "../../data/barmovie0113extended.data",
+    "model_path": ".",
+    "models": [ { "neurons": [0], "name": "test" } ]
+}

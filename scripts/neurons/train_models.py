@@ -1,7 +1,5 @@
-import os
+from dataclasses import dataclass
 import sys
-
-from mpi4py import MPI
 
 import numpy as np
 import scipy
@@ -11,8 +9,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-import torchsde
-
 from matplotlib import pyplot as plt
 
 from torch.utils.data import Dataset
@@ -21,14 +17,35 @@ import lightning as L
 from lightning.pytorch.callbacks import LearningRateMonitor
 from lightning.pytorch.loggers import CSVLogger
 
-import os
-import argparse
 from pathlib import Path
 import json
 
 
-with open(sys.argv[1]) as f:
-    CONFIG = json.load(f)
+@dataclass
+class ModelSpec:
+    neurons: list[int]
+    name: str
+
+
+class Config:
+    dataset_path: Path
+    model_path: Path
+    models: list[ModelSpec]
+
+    def __init__(self, dataset_path, model_path, models):
+        self.dataset_path = Path(dataset_path)
+        self.model_path = Path(model_path)
+        self.models = []
+        for m in models:
+            self.models.append(ModelSpec(**m))
+
+
+try:
+    with open(sys.argv[1]) as f:
+        CONFIG = Config(**json.load(f))
+except FileNotFoundError:
+    print("Usage: train_models.py CONFIG_FILE")
+    sys.exit(1)
 
 BIN_WIDTH = 100
 SECONDS_PER_UNIT = 1e-4
@@ -44,12 +61,13 @@ class NeuronDataSet(Dataset):
         self.neurons = neurons
         if intervals is None:
             self.intervals = np.stack(
-                (self.data["rep_begin_time"], self.data["rep_end_time"]), axis=-1
+                (self.data["rep_begin_time"],
+                 self.data["rep_end_time"]), axis=-1
             )
         else:
             self.intervals = np.array(intervals).reshape((-1, 2))
         self.delta_t = delta_t
-        self.stimulus_std = np.std(self.data["stim"])
+        self.stimulus_std = float(np.std(self.data["stim"]))
 
     def __len__(self):
         return self.intervals.shape[0]
@@ -75,7 +93,8 @@ class NeuronDataSet(Dataset):
         # spikes_embedded = []
         for k, n in enumerate(self.neurons):
             spike_times = self.data["SpikeTimes"][n]
-            hist, _ = np.histogram(spike_times, bins=np.concat([grid, [t_end]]))
+            hist, _ = np.histogram(
+                spike_times, bins=np.concat([grid, [t_end]]))
             spikes_binned.append(torch.tensor(hist, dtype=torch.uint8))
 
         t_seconds = torch.tensor(
@@ -145,10 +164,12 @@ class ConditionalSpikeRNN(nn.Module):
         self.n_neurons = n_neurons
 
         # initial convolution layer over input
-        self.conv = nn.Conv1d(1, hidden_size, kernel_size, padding=kernel_size - 1)
+        self.conv = nn.Conv1d(1, hidden_size, kernel_size,
+                              padding=kernel_size - 1)
 
         # RNN layer (stimulus dimension is 1)
-        self.rnn = nn.GRU(hidden_size, hidden_size, num_layers, batch_first=False)
+        self.rnn = nn.GRU(hidden_size, hidden_size,
+                          num_layers, batch_first=False)
         self.h_0 = nn.Parameter(torch.randn(num_layers, 1, hidden_size))
 
         # Linear layer to output spike prob for each neuron
@@ -206,7 +227,8 @@ class ConditionalSpikeCNN(nn.Module):
             layers.append(nn.ReLU())
 
         self.conv_net = nn.Sequential(
-            nn.ZeroPad1d(((kernel_size - 1) * num_layers, 0)),  # needed for causality
+            # needed for causality
+            nn.ZeroPad1d(((kernel_size - 1) * num_layers, 0)),
             *layers,
             # 1x1 convolution layer to output spike intensity for each neuron
             nn.Conv1d(hidden_size, n_neurons, 1),
@@ -246,7 +268,8 @@ class ConditionalSpikeCNN(nn.Module):
 
         x = torch.zeros((seq_len, batch_size, self.n_neurons))
         for t in range(seq_len):
-            log_intensities = self.forward(s[: t + 1], x[: t + 1]).clamp(-10, 10)
+            log_intensities = self.forward(
+                s[: t + 1], x[: t + 1]).clamp(-10, 10)
             x[t] = torch.poisson(log_intensities[-1].exp())
 
         return x
@@ -258,7 +281,7 @@ class SpikeModel(L.LightningModule):
         n_neurons: int,
         hidden_size: int,
         num_layers: int = 1,
-        kernel_size=None,
+        kernel_size: int | None = None,
         model_type="RNN",
     ):
         super().__init__()
@@ -268,6 +291,8 @@ class SpikeModel(L.LightningModule):
                 raise ValueError("cannot set kernel size for RNN.")
             self.net = ConditionalSpikeRNN(n_neurons, hidden_size, num_layers)
         elif model_type == "CNN":
+            if kernel_size is None:
+                raise ValueError("need to set kernel_size for CNN")
             self.net = ConditionalSpikeCNN(
                 n_neurons, hidden_size, num_layers, kernel_size=kernel_size
             )
@@ -293,9 +318,10 @@ class SpikeModel(L.LightningModule):
         self.log("val_loss", val_loss, prog_bar=True, batch_size=x.size(1))
         return val_loss
 
-    def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-2, weight_decay=1e-4)
-        total_steps = self.trainer.estimated_stepping_batches
+    def configure_optimizers(self):  # type: ignore
+        optimizer = torch.optim.Adam(
+            self.parameters(), lr=1e-2, weight_decay=1e-4)
+        total_steps = int(self.trainer.estimated_stepping_batches)
         scheduler = torch.optim.lr_scheduler.OneCycleLR(
             optimizer, max_lr=1e-1, total_steps=total_steps
         )
@@ -319,7 +345,8 @@ def plot_network_performance(model, train_dataset, validation_dataset, out_path=
     )
 
     for ax, t, s, title in zip(
-        axs[0, :], [t_train, t_val], [s_train, s_val], ["training", "validation"]
+        axs[0, :], [t_train, t_val], [
+            s_train, s_val], ["training", "validation"]
     ):
         ax.plot(t[:, 0], s[:, 0])
         ax.set_title(title)
@@ -336,22 +363,26 @@ def plot_network_performance(model, train_dataset, validation_dataset, out_path=
             ax.set_yticklabels([])
             ax.set_ylim(-0.2, 0.2)
             ax.plot(t[:, 0], intensity[:, i], linewidth=1)
-            ax.plot(t[:, 0], -x[:, :, i].mean(1, dtype=torch.float32), linewidth=1)
+            ax.plot(t[:, 0], -x[:, :, i].mean(1,
+                    dtype=torch.float32), linewidth=1)
 
     if out_path is not None:
         fig.savefig(out_path)
     return fig
 
 
-def train_model(dataset_path, neurons=[0], name="model"):
-    data = scipy.io.loadmat(dataset_path, squeeze_me=True)
+def train_model(neurons=[0], name="model"):
+    data = scipy.io.loadmat(CONFIG.dataset_path, squeeze_me=True)
     fraction = 0.7  # fraction of data to use for training
     intervals = np.column_stack((data["rep_begin_time"], data["rep_end_time"]))
-    c = (intervals[:, 0] + fraction * (intervals[:, 1] - intervals[:, 0])).astype(int)
+    c = (intervals[:, 0] + fraction *
+         (intervals[:, 1] - intervals[:, 0])).astype(int)
     train_intervals = np.column_stack((intervals[:, 0], c))
     validation_intervals = np.column_stack((c + 1, intervals[:, 1]))
-    train_dataset = NeuronDataSet(dataset_path, neurons, train_intervals)
-    validation_dataset = NeuronDataSet(dataset_path, neurons, validation_intervals)
+    train_dataset = NeuronDataSet(
+        CONFIG.dataset_path, neurons, train_intervals)
+    validation_dataset = NeuronDataSet(
+        CONFIG.dataset_path, neurons, validation_intervals)
 
     train_loader = DataLoader(
         train_dataset, shuffle=True, collate_fn=collate_time_series
@@ -366,7 +397,8 @@ def train_model(dataset_path, neurons=[0], name="model"):
     )
     lr_monitor = LearningRateMonitor(logging_interval="step")
 
-    logger = CSVLogger(save_dir=CONFIG["model_path"] + "training_logs", name=name, version="")
+    logger = CSVLogger(
+        save_dir=CONFIG.model_path / "training_logs", name=name, version="")
 
     trainer = L.Trainer(
         max_epochs=50, callbacks=[lr_monitor], log_every_n_steps=10, enable_progress_bar=False, logger=logger, enable_checkpointing=False
@@ -375,24 +407,13 @@ def train_model(dataset_path, neurons=[0], name="model"):
         model=spike_model, train_dataloaders=train_loader, val_dataloaders=val_loader
     )
 
-    plot_network_performance(spike_model, train_dataset, validation_dataset)
+    # plot_network_performance(spike_model, train_dataset, validation_dataset)
 
-    torch.save(spike_model.state_dict(), CONFIG["model_path"] + f"{name}.pth")
+    torch.save(spike_model.state_dict(), CONFIG.model_path / f"{name}.pth")
 
     return spike_model
 
 
 if __name__ == "__main__":
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-    size = comm.Get_size()
-
-    dataset_path = CONFIG["dataset_path"]
-    models = CONFIG["models"]
-
-    local_models = models[rank::size]
-
-    for spec in local_models:
-        neurons = spec["neurons"]
-        name = spec["name"]
-        model = train_model(dataset_path, neurons, name)
+    for spec in CONFIG.models:
+        model = train_model(spec.neurons, spec.name)
