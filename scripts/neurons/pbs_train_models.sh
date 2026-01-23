@@ -1,6 +1,6 @@
-#PBS -lselect=16:ncpus=1
+#PBS -lselect=115:ncpus=1
 #PBS -lplace=free
-#PBS -q highcpu
+#PBS -q highcore
 #PBS -N neurons
 
 set -e
@@ -10,6 +10,8 @@ export PYTHON=$(which python)
 export CONFIG_PATH="$PBS_O_WORKDIR/scripts/neurons/config.json"
 export SCRIPT_PATH="$PBS_O_WORKDIR/scripts/neurons/train_models.py"
 
-echo mpiexec $PYTHON $SCRIPT_PATH $CONFIG_PATH
-mpiexec $PYTHON $SCRIPT_PATH $CONFIG_PATH
+conda activate pyenv
+
+echo mpiexec --wdir $PBS_O_WORKDIR $PYTHON $SCRIPT_PATH $CONFIG_PATH
+mpiexec --wdir $PBS_O_WORKDIR $PYTHON $SCRIPT_PATH $CONFIG_PATH
 

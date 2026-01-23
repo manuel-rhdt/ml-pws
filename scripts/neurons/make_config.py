@@ -1,27 +1,35 @@
 import json
 import os.path
+from pathlib import Path
 
-PREFIX = os.path.abspath(".")
+PREFIX = Path('.')
 
 runs = []
 
-runs.append({
-    "neurons": list(range(50)),
-    "name": "neurons_range(50)"
-})
+# runs.append({
+#     "neurons": list(range(50)),
+#     "name": "neurons_range(50)"
+# })
 
-for n in range(50):
+for n in range(230):
     r = {
             "neurons": [n],
-            "name": f"neuron_{n}"
+            "name": f"neuron_{n}",
+            "output_dir": str(PREFIX / "experiments" / "neurons" / f"neuron_{n}"),
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
     }
     runs.append(r)
 
 config = {
-        "dataset_path": PREFIX + "/data/barmovie0113extended.data",
-        "model_path": PREFIX + "/models/",
-        "models": runs
+        "dataset_path": str(PREFIX / "data" / "barmovie0113extended.data"),
+        "model_path": str(PREFIX / "models"),
+        "models": runs,
+        "N": 1000,
+        "M": 256,
+        "seq_len": 400,
         }
 
-with open(PREFIX + "/scripts/neurons/config.json", "w") as f:
-    json.dump(config, f)
+with open(PREFIX / "scripts" / "neurons" / "config.json", "w") as f:
+    json.dump(config, f, indent=4)

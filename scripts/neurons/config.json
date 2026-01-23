@@ -1,1 +1,2309 @@
-{"dataset_path": "/data/clusterusers/reinhardt/containerhome/ml-pws/data/barmovie0113extended.data", "model_path": "/data/clusterusers/reinhardt/containerhome/ml-pws/models/", "models": [{"neurons": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49], "name": "neurons_range(50)"}, {"neurons": [0], "name": "neuron_0"}, {"neurons": [1], "name": "neuron_1"}, {"neurons": [2], "name": "neuron_2"}, {"neurons": [3], "name": "neuron_3"}, {"neurons": [4], "name": "neuron_4"}, {"neurons": [5], "name": "neuron_5"}, {"neurons": [6], "name": "neuron_6"}, {"neurons": [7], "name": "neuron_7"}, {"neurons": [8], "name": "neuron_8"}, {"neurons": [9], "name": "neuron_9"}, {"neurons": [10], "name": "neuron_10"}, {"neurons": [11], "name": "neuron_11"}, {"neurons": [12], "name": "neuron_12"}, {"neurons": [13], "name": "neuron_13"}, {"neurons": [14], "name": "neuron_14"}, {"neurons": [15], "name": "neuron_15"}, {"neurons": [16], "name": "neuron_16"}, {"neurons": [17], "name": "neuron_17"}, {"neurons": [18], "name": "neuron_18"}, {"neurons": [19], "name": "neuron_19"}, {"neurons": [20], "name": "neuron_20"}, {"neurons": [21], "name": "neuron_21"}, {"neurons": [22], "name": "neuron_22"}, {"neurons": [23], "name": "neuron_23"}, {"neurons": [24], "name": "neuron_24"}, {"neurons": [25], "name": "neuron_25"}, {"neurons": [26], "name": "neuron_26"}, {"neurons": [27], "name": "neuron_27"}, {"neurons": [28], "name": "neuron_28"}, {"neurons": [29], "name": "neuron_29"}, {"neurons": [30], "name": "neuron_30"}, {"neurons": [31], "name": "neuron_31"}, {"neurons": [32], "name": "neuron_32"}, {"neurons": [33], "name": "neuron_33"}, {"neurons": [34], "name": "neuron_34"}, {"neurons": [35], "name": "neuron_35"}, {"neurons": [36], "name": "neuron_36"}, {"neurons": [37], "name": "neuron_37"}, {"neurons": [38], "name": "neuron_38"}, {"neurons": [39], "name": "neuron_39"}, {"neurons": [40], "name": "neuron_40"}, {"neurons": [41], "name": "neuron_41"}, {"neurons": [42], "name": "neuron_42"}, {"neurons": [43], "name": "neuron_43"}, {"neurons": [44], "name": "neuron_44"}, {"neurons": [45], "name": "neuron_45"}, {"neurons": [46], "name": "neuron_46"}, {"neurons": [47], "name": "neuron_47"}, {"neurons": [48], "name": "neuron_48"}, {"neurons": [49], "name": "neuron_49"}]}
+{
+    "dataset_path": "data/barmovie0113extended.data",
+    "model_path": "models",
+    "models": [
+        {
+            "neurons": [
+                0
+            ],
+            "name": "neuron_0",
+            "output_dir": "experiments/neurons/neuron_0",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                1
+            ],
+            "name": "neuron_1",
+            "output_dir": "experiments/neurons/neuron_1",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                2
+            ],
+            "name": "neuron_2",
+            "output_dir": "experiments/neurons/neuron_2",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                3
+            ],
+            "name": "neuron_3",
+            "output_dir": "experiments/neurons/neuron_3",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                4
+            ],
+            "name": "neuron_4",
+            "output_dir": "experiments/neurons/neuron_4",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                5
+            ],
+            "name": "neuron_5",
+            "output_dir": "experiments/neurons/neuron_5",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                6
+            ],
+            "name": "neuron_6",
+            "output_dir": "experiments/neurons/neuron_6",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                7
+            ],
+            "name": "neuron_7",
+            "output_dir": "experiments/neurons/neuron_7",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                8
+            ],
+            "name": "neuron_8",
+            "output_dir": "experiments/neurons/neuron_8",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                9
+            ],
+            "name": "neuron_9",
+            "output_dir": "experiments/neurons/neuron_9",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                10
+            ],
+            "name": "neuron_10",
+            "output_dir": "experiments/neurons/neuron_10",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                11
+            ],
+            "name": "neuron_11",
+            "output_dir": "experiments/neurons/neuron_11",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                12
+            ],
+            "name": "neuron_12",
+            "output_dir": "experiments/neurons/neuron_12",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                13
+            ],
+            "name": "neuron_13",
+            "output_dir": "experiments/neurons/neuron_13",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                14
+            ],
+            "name": "neuron_14",
+            "output_dir": "experiments/neurons/neuron_14",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                15
+            ],
+            "name": "neuron_15",
+            "output_dir": "experiments/neurons/neuron_15",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                16
+            ],
+            "name": "neuron_16",
+            "output_dir": "experiments/neurons/neuron_16",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                17
+            ],
+            "name": "neuron_17",
+            "output_dir": "experiments/neurons/neuron_17",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                18
+            ],
+            "name": "neuron_18",
+            "output_dir": "experiments/neurons/neuron_18",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                19
+            ],
+            "name": "neuron_19",
+            "output_dir": "experiments/neurons/neuron_19",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                20
+            ],
+            "name": "neuron_20",
+            "output_dir": "experiments/neurons/neuron_20",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                21
+            ],
+            "name": "neuron_21",
+            "output_dir": "experiments/neurons/neuron_21",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                22
+            ],
+            "name": "neuron_22",
+            "output_dir": "experiments/neurons/neuron_22",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                23
+            ],
+            "name": "neuron_23",
+            "output_dir": "experiments/neurons/neuron_23",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                24
+            ],
+            "name": "neuron_24",
+            "output_dir": "experiments/neurons/neuron_24",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                25
+            ],
+            "name": "neuron_25",
+            "output_dir": "experiments/neurons/neuron_25",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                26
+            ],
+            "name": "neuron_26",
+            "output_dir": "experiments/neurons/neuron_26",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                27
+            ],
+            "name": "neuron_27",
+            "output_dir": "experiments/neurons/neuron_27",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                28
+            ],
+            "name": "neuron_28",
+            "output_dir": "experiments/neurons/neuron_28",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                29
+            ],
+            "name": "neuron_29",
+            "output_dir": "experiments/neurons/neuron_29",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                30
+            ],
+            "name": "neuron_30",
+            "output_dir": "experiments/neurons/neuron_30",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                31
+            ],
+            "name": "neuron_31",
+            "output_dir": "experiments/neurons/neuron_31",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                32
+            ],
+            "name": "neuron_32",
+            "output_dir": "experiments/neurons/neuron_32",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                33
+            ],
+            "name": "neuron_33",
+            "output_dir": "experiments/neurons/neuron_33",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                34
+            ],
+            "name": "neuron_34",
+            "output_dir": "experiments/neurons/neuron_34",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                35
+            ],
+            "name": "neuron_35",
+            "output_dir": "experiments/neurons/neuron_35",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                36
+            ],
+            "name": "neuron_36",
+            "output_dir": "experiments/neurons/neuron_36",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                37
+            ],
+            "name": "neuron_37",
+            "output_dir": "experiments/neurons/neuron_37",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                38
+            ],
+            "name": "neuron_38",
+            "output_dir": "experiments/neurons/neuron_38",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                39
+            ],
+            "name": "neuron_39",
+            "output_dir": "experiments/neurons/neuron_39",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                40
+            ],
+            "name": "neuron_40",
+            "output_dir": "experiments/neurons/neuron_40",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                41
+            ],
+            "name": "neuron_41",
+            "output_dir": "experiments/neurons/neuron_41",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                42
+            ],
+            "name": "neuron_42",
+            "output_dir": "experiments/neurons/neuron_42",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                43
+            ],
+            "name": "neuron_43",
+            "output_dir": "experiments/neurons/neuron_43",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                44
+            ],
+            "name": "neuron_44",
+            "output_dir": "experiments/neurons/neuron_44",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                45
+            ],
+            "name": "neuron_45",
+            "output_dir": "experiments/neurons/neuron_45",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                46
+            ],
+            "name": "neuron_46",
+            "output_dir": "experiments/neurons/neuron_46",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                47
+            ],
+            "name": "neuron_47",
+            "output_dir": "experiments/neurons/neuron_47",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                48
+            ],
+            "name": "neuron_48",
+            "output_dir": "experiments/neurons/neuron_48",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                49
+            ],
+            "name": "neuron_49",
+            "output_dir": "experiments/neurons/neuron_49",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                50
+            ],
+            "name": "neuron_50",
+            "output_dir": "experiments/neurons/neuron_50",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                51
+            ],
+            "name": "neuron_51",
+            "output_dir": "experiments/neurons/neuron_51",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                52
+            ],
+            "name": "neuron_52",
+            "output_dir": "experiments/neurons/neuron_52",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                53
+            ],
+            "name": "neuron_53",
+            "output_dir": "experiments/neurons/neuron_53",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                54
+            ],
+            "name": "neuron_54",
+            "output_dir": "experiments/neurons/neuron_54",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                55
+            ],
+            "name": "neuron_55",
+            "output_dir": "experiments/neurons/neuron_55",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                56
+            ],
+            "name": "neuron_56",
+            "output_dir": "experiments/neurons/neuron_56",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                57
+            ],
+            "name": "neuron_57",
+            "output_dir": "experiments/neurons/neuron_57",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                58
+            ],
+            "name": "neuron_58",
+            "output_dir": "experiments/neurons/neuron_58",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                59
+            ],
+            "name": "neuron_59",
+            "output_dir": "experiments/neurons/neuron_59",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                60
+            ],
+            "name": "neuron_60",
+            "output_dir": "experiments/neurons/neuron_60",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                61
+            ],
+            "name": "neuron_61",
+            "output_dir": "experiments/neurons/neuron_61",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                62
+            ],
+            "name": "neuron_62",
+            "output_dir": "experiments/neurons/neuron_62",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                63
+            ],
+            "name": "neuron_63",
+            "output_dir": "experiments/neurons/neuron_63",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                64
+            ],
+            "name": "neuron_64",
+            "output_dir": "experiments/neurons/neuron_64",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                65
+            ],
+            "name": "neuron_65",
+            "output_dir": "experiments/neurons/neuron_65",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                66
+            ],
+            "name": "neuron_66",
+            "output_dir": "experiments/neurons/neuron_66",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                67
+            ],
+            "name": "neuron_67",
+            "output_dir": "experiments/neurons/neuron_67",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                68
+            ],
+            "name": "neuron_68",
+            "output_dir": "experiments/neurons/neuron_68",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                69
+            ],
+            "name": "neuron_69",
+            "output_dir": "experiments/neurons/neuron_69",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                70
+            ],
+            "name": "neuron_70",
+            "output_dir": "experiments/neurons/neuron_70",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                71
+            ],
+            "name": "neuron_71",
+            "output_dir": "experiments/neurons/neuron_71",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                72
+            ],
+            "name": "neuron_72",
+            "output_dir": "experiments/neurons/neuron_72",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                73
+            ],
+            "name": "neuron_73",
+            "output_dir": "experiments/neurons/neuron_73",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                74
+            ],
+            "name": "neuron_74",
+            "output_dir": "experiments/neurons/neuron_74",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                75
+            ],
+            "name": "neuron_75",
+            "output_dir": "experiments/neurons/neuron_75",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                76
+            ],
+            "name": "neuron_76",
+            "output_dir": "experiments/neurons/neuron_76",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                77
+            ],
+            "name": "neuron_77",
+            "output_dir": "experiments/neurons/neuron_77",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                78
+            ],
+            "name": "neuron_78",
+            "output_dir": "experiments/neurons/neuron_78",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                79
+            ],
+            "name": "neuron_79",
+            "output_dir": "experiments/neurons/neuron_79",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                80
+            ],
+            "name": "neuron_80",
+            "output_dir": "experiments/neurons/neuron_80",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                81
+            ],
+            "name": "neuron_81",
+            "output_dir": "experiments/neurons/neuron_81",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                82
+            ],
+            "name": "neuron_82",
+            "output_dir": "experiments/neurons/neuron_82",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                83
+            ],
+            "name": "neuron_83",
+            "output_dir": "experiments/neurons/neuron_83",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                84
+            ],
+            "name": "neuron_84",
+            "output_dir": "experiments/neurons/neuron_84",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                85
+            ],
+            "name": "neuron_85",
+            "output_dir": "experiments/neurons/neuron_85",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                86
+            ],
+            "name": "neuron_86",
+            "output_dir": "experiments/neurons/neuron_86",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                87
+            ],
+            "name": "neuron_87",
+            "output_dir": "experiments/neurons/neuron_87",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                88
+            ],
+            "name": "neuron_88",
+            "output_dir": "experiments/neurons/neuron_88",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                89
+            ],
+            "name": "neuron_89",
+            "output_dir": "experiments/neurons/neuron_89",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                90
+            ],
+            "name": "neuron_90",
+            "output_dir": "experiments/neurons/neuron_90",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                91
+            ],
+            "name": "neuron_91",
+            "output_dir": "experiments/neurons/neuron_91",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                92
+            ],
+            "name": "neuron_92",
+            "output_dir": "experiments/neurons/neuron_92",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                93
+            ],
+            "name": "neuron_93",
+            "output_dir": "experiments/neurons/neuron_93",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                94
+            ],
+            "name": "neuron_94",
+            "output_dir": "experiments/neurons/neuron_94",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                95
+            ],
+            "name": "neuron_95",
+            "output_dir": "experiments/neurons/neuron_95",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                96
+            ],
+            "name": "neuron_96",
+            "output_dir": "experiments/neurons/neuron_96",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                97
+            ],
+            "name": "neuron_97",
+            "output_dir": "experiments/neurons/neuron_97",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                98
+            ],
+            "name": "neuron_98",
+            "output_dir": "experiments/neurons/neuron_98",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                99
+            ],
+            "name": "neuron_99",
+            "output_dir": "experiments/neurons/neuron_99",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                100
+            ],
+            "name": "neuron_100",
+            "output_dir": "experiments/neurons/neuron_100",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                101
+            ],
+            "name": "neuron_101",
+            "output_dir": "experiments/neurons/neuron_101",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                102
+            ],
+            "name": "neuron_102",
+            "output_dir": "experiments/neurons/neuron_102",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                103
+            ],
+            "name": "neuron_103",
+            "output_dir": "experiments/neurons/neuron_103",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                104
+            ],
+            "name": "neuron_104",
+            "output_dir": "experiments/neurons/neuron_104",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                105
+            ],
+            "name": "neuron_105",
+            "output_dir": "experiments/neurons/neuron_105",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                106
+            ],
+            "name": "neuron_106",
+            "output_dir": "experiments/neurons/neuron_106",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                107
+            ],
+            "name": "neuron_107",
+            "output_dir": "experiments/neurons/neuron_107",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                108
+            ],
+            "name": "neuron_108",
+            "output_dir": "experiments/neurons/neuron_108",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                109
+            ],
+            "name": "neuron_109",
+            "output_dir": "experiments/neurons/neuron_109",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                110
+            ],
+            "name": "neuron_110",
+            "output_dir": "experiments/neurons/neuron_110",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                111
+            ],
+            "name": "neuron_111",
+            "output_dir": "experiments/neurons/neuron_111",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                112
+            ],
+            "name": "neuron_112",
+            "output_dir": "experiments/neurons/neuron_112",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                113
+            ],
+            "name": "neuron_113",
+            "output_dir": "experiments/neurons/neuron_113",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                114
+            ],
+            "name": "neuron_114",
+            "output_dir": "experiments/neurons/neuron_114",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                115
+            ],
+            "name": "neuron_115",
+            "output_dir": "experiments/neurons/neuron_115",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                116
+            ],
+            "name": "neuron_116",
+            "output_dir": "experiments/neurons/neuron_116",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                117
+            ],
+            "name": "neuron_117",
+            "output_dir": "experiments/neurons/neuron_117",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                118
+            ],
+            "name": "neuron_118",
+            "output_dir": "experiments/neurons/neuron_118",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                119
+            ],
+            "name": "neuron_119",
+            "output_dir": "experiments/neurons/neuron_119",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                120
+            ],
+            "name": "neuron_120",
+            "output_dir": "experiments/neurons/neuron_120",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                121
+            ],
+            "name": "neuron_121",
+            "output_dir": "experiments/neurons/neuron_121",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                122
+            ],
+            "name": "neuron_122",
+            "output_dir": "experiments/neurons/neuron_122",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                123
+            ],
+            "name": "neuron_123",
+            "output_dir": "experiments/neurons/neuron_123",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                124
+            ],
+            "name": "neuron_124",
+            "output_dir": "experiments/neurons/neuron_124",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                125
+            ],
+            "name": "neuron_125",
+            "output_dir": "experiments/neurons/neuron_125",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                126
+            ],
+            "name": "neuron_126",
+            "output_dir": "experiments/neurons/neuron_126",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                127
+            ],
+            "name": "neuron_127",
+            "output_dir": "experiments/neurons/neuron_127",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                128
+            ],
+            "name": "neuron_128",
+            "output_dir": "experiments/neurons/neuron_128",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                129
+            ],
+            "name": "neuron_129",
+            "output_dir": "experiments/neurons/neuron_129",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                130
+            ],
+            "name": "neuron_130",
+            "output_dir": "experiments/neurons/neuron_130",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                131
+            ],
+            "name": "neuron_131",
+            "output_dir": "experiments/neurons/neuron_131",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                132
+            ],
+            "name": "neuron_132",
+            "output_dir": "experiments/neurons/neuron_132",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                133
+            ],
+            "name": "neuron_133",
+            "output_dir": "experiments/neurons/neuron_133",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                134
+            ],
+            "name": "neuron_134",
+            "output_dir": "experiments/neurons/neuron_134",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                135
+            ],
+            "name": "neuron_135",
+            "output_dir": "experiments/neurons/neuron_135",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                136
+            ],
+            "name": "neuron_136",
+            "output_dir": "experiments/neurons/neuron_136",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                137
+            ],
+            "name": "neuron_137",
+            "output_dir": "experiments/neurons/neuron_137",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                138
+            ],
+            "name": "neuron_138",
+            "output_dir": "experiments/neurons/neuron_138",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                139
+            ],
+            "name": "neuron_139",
+            "output_dir": "experiments/neurons/neuron_139",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                140
+            ],
+            "name": "neuron_140",
+            "output_dir": "experiments/neurons/neuron_140",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                141
+            ],
+            "name": "neuron_141",
+            "output_dir": "experiments/neurons/neuron_141",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                142
+            ],
+            "name": "neuron_142",
+            "output_dir": "experiments/neurons/neuron_142",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                143
+            ],
+            "name": "neuron_143",
+            "output_dir": "experiments/neurons/neuron_143",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                144
+            ],
+            "name": "neuron_144",
+            "output_dir": "experiments/neurons/neuron_144",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                145
+            ],
+            "name": "neuron_145",
+            "output_dir": "experiments/neurons/neuron_145",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                146
+            ],
+            "name": "neuron_146",
+            "output_dir": "experiments/neurons/neuron_146",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                147
+            ],
+            "name": "neuron_147",
+            "output_dir": "experiments/neurons/neuron_147",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                148
+            ],
+            "name": "neuron_148",
+            "output_dir": "experiments/neurons/neuron_148",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                149
+            ],
+            "name": "neuron_149",
+            "output_dir": "experiments/neurons/neuron_149",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                150
+            ],
+            "name": "neuron_150",
+            "output_dir": "experiments/neurons/neuron_150",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                151
+            ],
+            "name": "neuron_151",
+            "output_dir": "experiments/neurons/neuron_151",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                152
+            ],
+            "name": "neuron_152",
+            "output_dir": "experiments/neurons/neuron_152",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                153
+            ],
+            "name": "neuron_153",
+            "output_dir": "experiments/neurons/neuron_153",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                154
+            ],
+            "name": "neuron_154",
+            "output_dir": "experiments/neurons/neuron_154",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                155
+            ],
+            "name": "neuron_155",
+            "output_dir": "experiments/neurons/neuron_155",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                156
+            ],
+            "name": "neuron_156",
+            "output_dir": "experiments/neurons/neuron_156",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                157
+            ],
+            "name": "neuron_157",
+            "output_dir": "experiments/neurons/neuron_157",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                158
+            ],
+            "name": "neuron_158",
+            "output_dir": "experiments/neurons/neuron_158",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                159
+            ],
+            "name": "neuron_159",
+            "output_dir": "experiments/neurons/neuron_159",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                160
+            ],
+            "name": "neuron_160",
+            "output_dir": "experiments/neurons/neuron_160",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                161
+            ],
+            "name": "neuron_161",
+            "output_dir": "experiments/neurons/neuron_161",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                162
+            ],
+            "name": "neuron_162",
+            "output_dir": "experiments/neurons/neuron_162",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                163
+            ],
+            "name": "neuron_163",
+            "output_dir": "experiments/neurons/neuron_163",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                164
+            ],
+            "name": "neuron_164",
+            "output_dir": "experiments/neurons/neuron_164",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                165
+            ],
+            "name": "neuron_165",
+            "output_dir": "experiments/neurons/neuron_165",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                166
+            ],
+            "name": "neuron_166",
+            "output_dir": "experiments/neurons/neuron_166",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                167
+            ],
+            "name": "neuron_167",
+            "output_dir": "experiments/neurons/neuron_167",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                168
+            ],
+            "name": "neuron_168",
+            "output_dir": "experiments/neurons/neuron_168",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                169
+            ],
+            "name": "neuron_169",
+            "output_dir": "experiments/neurons/neuron_169",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                170
+            ],
+            "name": "neuron_170",
+            "output_dir": "experiments/neurons/neuron_170",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                171
+            ],
+            "name": "neuron_171",
+            "output_dir": "experiments/neurons/neuron_171",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                172
+            ],
+            "name": "neuron_172",
+            "output_dir": "experiments/neurons/neuron_172",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                173
+            ],
+            "name": "neuron_173",
+            "output_dir": "experiments/neurons/neuron_173",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                174
+            ],
+            "name": "neuron_174",
+            "output_dir": "experiments/neurons/neuron_174",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                175
+            ],
+            "name": "neuron_175",
+            "output_dir": "experiments/neurons/neuron_175",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                176
+            ],
+            "name": "neuron_176",
+            "output_dir": "experiments/neurons/neuron_176",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                177
+            ],
+            "name": "neuron_177",
+            "output_dir": "experiments/neurons/neuron_177",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                178
+            ],
+            "name": "neuron_178",
+            "output_dir": "experiments/neurons/neuron_178",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                179
+            ],
+            "name": "neuron_179",
+            "output_dir": "experiments/neurons/neuron_179",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                180
+            ],
+            "name": "neuron_180",
+            "output_dir": "experiments/neurons/neuron_180",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                181
+            ],
+            "name": "neuron_181",
+            "output_dir": "experiments/neurons/neuron_181",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                182
+            ],
+            "name": "neuron_182",
+            "output_dir": "experiments/neurons/neuron_182",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                183
+            ],
+            "name": "neuron_183",
+            "output_dir": "experiments/neurons/neuron_183",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                184
+            ],
+            "name": "neuron_184",
+            "output_dir": "experiments/neurons/neuron_184",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                185
+            ],
+            "name": "neuron_185",
+            "output_dir": "experiments/neurons/neuron_185",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                186
+            ],
+            "name": "neuron_186",
+            "output_dir": "experiments/neurons/neuron_186",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                187
+            ],
+            "name": "neuron_187",
+            "output_dir": "experiments/neurons/neuron_187",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                188
+            ],
+            "name": "neuron_188",
+            "output_dir": "experiments/neurons/neuron_188",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                189
+            ],
+            "name": "neuron_189",
+            "output_dir": "experiments/neurons/neuron_189",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                190
+            ],
+            "name": "neuron_190",
+            "output_dir": "experiments/neurons/neuron_190",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                191
+            ],
+            "name": "neuron_191",
+            "output_dir": "experiments/neurons/neuron_191",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                192
+            ],
+            "name": "neuron_192",
+            "output_dir": "experiments/neurons/neuron_192",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                193
+            ],
+            "name": "neuron_193",
+            "output_dir": "experiments/neurons/neuron_193",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                194
+            ],
+            "name": "neuron_194",
+            "output_dir": "experiments/neurons/neuron_194",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                195
+            ],
+            "name": "neuron_195",
+            "output_dir": "experiments/neurons/neuron_195",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                196
+            ],
+            "name": "neuron_196",
+            "output_dir": "experiments/neurons/neuron_196",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                197
+            ],
+            "name": "neuron_197",
+            "output_dir": "experiments/neurons/neuron_197",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                198
+            ],
+            "name": "neuron_198",
+            "output_dir": "experiments/neurons/neuron_198",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                199
+            ],
+            "name": "neuron_199",
+            "output_dir": "experiments/neurons/neuron_199",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                200
+            ],
+            "name": "neuron_200",
+            "output_dir": "experiments/neurons/neuron_200",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                201
+            ],
+            "name": "neuron_201",
+            "output_dir": "experiments/neurons/neuron_201",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                202
+            ],
+            "name": "neuron_202",
+            "output_dir": "experiments/neurons/neuron_202",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                203
+            ],
+            "name": "neuron_203",
+            "output_dir": "experiments/neurons/neuron_203",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                204
+            ],
+            "name": "neuron_204",
+            "output_dir": "experiments/neurons/neuron_204",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                205
+            ],
+            "name": "neuron_205",
+            "output_dir": "experiments/neurons/neuron_205",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                206
+            ],
+            "name": "neuron_206",
+            "output_dir": "experiments/neurons/neuron_206",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                207
+            ],
+            "name": "neuron_207",
+            "output_dir": "experiments/neurons/neuron_207",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                208
+            ],
+            "name": "neuron_208",
+            "output_dir": "experiments/neurons/neuron_208",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                209
+            ],
+            "name": "neuron_209",
+            "output_dir": "experiments/neurons/neuron_209",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                210
+            ],
+            "name": "neuron_210",
+            "output_dir": "experiments/neurons/neuron_210",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                211
+            ],
+            "name": "neuron_211",
+            "output_dir": "experiments/neurons/neuron_211",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                212
+            ],
+            "name": "neuron_212",
+            "output_dir": "experiments/neurons/neuron_212",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                213
+            ],
+            "name": "neuron_213",
+            "output_dir": "experiments/neurons/neuron_213",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                214
+            ],
+            "name": "neuron_214",
+            "output_dir": "experiments/neurons/neuron_214",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                215
+            ],
+            "name": "neuron_215",
+            "output_dir": "experiments/neurons/neuron_215",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                216
+            ],
+            "name": "neuron_216",
+            "output_dir": "experiments/neurons/neuron_216",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                217
+            ],
+            "name": "neuron_217",
+            "output_dir": "experiments/neurons/neuron_217",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                218
+            ],
+            "name": "neuron_218",
+            "output_dir": "experiments/neurons/neuron_218",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                219
+            ],
+            "name": "neuron_219",
+            "output_dir": "experiments/neurons/neuron_219",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                220
+            ],
+            "name": "neuron_220",
+            "output_dir": "experiments/neurons/neuron_220",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                221
+            ],
+            "name": "neuron_221",
+            "output_dir": "experiments/neurons/neuron_221",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                222
+            ],
+            "name": "neuron_222",
+            "output_dir": "experiments/neurons/neuron_222",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                223
+            ],
+            "name": "neuron_223",
+            "output_dir": "experiments/neurons/neuron_223",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                224
+            ],
+            "name": "neuron_224",
+            "output_dir": "experiments/neurons/neuron_224",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                225
+            ],
+            "name": "neuron_225",
+            "output_dir": "experiments/neurons/neuron_225",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                226
+            ],
+            "name": "neuron_226",
+            "output_dir": "experiments/neurons/neuron_226",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                227
+            ],
+            "name": "neuron_227",
+            "output_dir": "experiments/neurons/neuron_227",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                228
+            ],
+            "name": "neuron_228",
+            "output_dir": "experiments/neurons/neuron_228",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        },
+        {
+            "neurons": [
+                229
+            ],
+            "name": "neuron_229",
+            "output_dir": "experiments/neurons/neuron_229",
+            "hidden_size": 40,
+            "num_layers": 4,
+            "kernel_size": 20
+        }
+    ],
+    "N": 1000,
+    "M": 256,
+    "seq_len": 400
+}
