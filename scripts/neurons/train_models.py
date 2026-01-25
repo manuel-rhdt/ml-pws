@@ -4,18 +4,47 @@ from pathlib import Path
 import sys
 import json
 
-from mpi4py import MPI
-
 import numpy as np
 import scipy
 
 import torch
+
+# Optional MPI support - fall back to single process if not available
+try:
+    from mpi4py import MPI
+    _comm = MPI.COMM_WORLD
+    _rank = _comm.Get_rank()
+    _size = _comm.Get_size()
+    _has_mpi = _size > 1  # Only use MPI if actually running with multiple processes
+except ImportError:
+    _comm = None
+    _rank = 0
+    _size = 1
+    _has_mpi = False
+
+
+def get_rank():
+    """Get current MPI rank (0 if MPI not available)."""
+    return _rank
+
+
+def get_size():
+    """Get total number of MPI processes (1 if MPI not available)."""
+    return _size
+
+
+def barrier():
+    """MPI barrier (no-op if MPI not available)."""
+    if _has_mpi and _comm is not None:
+        _comm.Barrier()
 from torch.utils.data import DataLoader, Dataset
 
 from matplotlib import pyplot as plt
 
+import shutil
+
 import lightning as L
-from lightning.pytorch.callbacks import LearningRateMonitor
+from lightning.pytorch.callbacks import LearningRateMonitor, ModelCheckpoint
 from lightning.pytorch.loggers import CSVLogger
 
 from ml_pws.models.neuron_models import SpikeModel
@@ -215,13 +244,19 @@ def train_model(dataset_path, model_spec: ModelSpec):
     )
 
     lr_monitor = LearningRateMonitor(logging_interval="step")
+    checkpoint_callback = ModelCheckpoint(
+        monitor="val_loss",
+        mode="min",
+        save_top_k=1,
+        filename="best",
+    )
     logger = CSVLogger(
-        save_dir=output_dir.parent / "training_logs", name=name, version=""
+        save_dir=output_dir.parent, name=name, version=""
     )
 
     trainer = L.Trainer(
         max_epochs=10,
-        callbacks=[lr_monitor],
+        callbacks=[lr_monitor, checkpoint_callback],
         log_every_n_steps=10,
         logger=logger,
         enable_progress_bar=False,
@@ -237,15 +272,23 @@ def train_model(dataset_path, model_spec: ModelSpec):
         spike_model, validation_dataset, output_dir / "validation.png"
     )
 
-    torch.save(spike_model.state_dict(), Path(CONFIG["model_path"]) / f"{name}.pth")
+    # Save best checkpoint to output_dir
+    best_ckpt_path = checkpoint_callback.best_model_path
+    if best_ckpt_path:
+        shutil.copy(best_ckpt_path, output_dir / "best.ckpt")
 
     return spike_model
 
 
 if __name__ == "__main__":
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-    size = comm.Get_size()
+    rank = get_rank()
+    size = get_size()
+
+    if rank == 0:
+        if _has_mpi:
+            print(f"Starting training with {size} MPI processes")
+        else:
+            print("Starting training (single process, MPI not available)")
 
     dataset_path = CONFIG["dataset_path"]
     models = []
@@ -253,8 +296,20 @@ if __name__ == "__main__":
         spec["output_dir"] = Path(spec["output_dir"])
         models.append(ModelSpec(**spec))
 
+    # Distribute work across MPI ranks (or process all if single process)
     local_models = models[rank::size]
 
+    if rank == 0:
+        print(f"Total models: {len(models)}")
+
     for spec in local_models:
+        print(f"Rank {rank}: Training {spec.name}...")
         os.makedirs(spec.output_dir, exist_ok=True)
         model = train_model(dataset_path, spec)
+        print(f"Rank {rank}: Completed {spec.name}")
+
+    # Wait for all ranks to complete
+    barrier()
+
+    if rank == 0:
+        print("All training completed!")

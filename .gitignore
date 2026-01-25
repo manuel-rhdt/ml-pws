@@ -1,5 +1,8 @@
 # Custom entries
 
+models/*
+notebooks/training_logs/
+workspace
 **/lightning_logs
 notebooks/checkpoints
 metrics/

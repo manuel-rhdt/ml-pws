@@ -20,17 +20,22 @@ class StochasticHarmonicOscillator(nn.Module):
     def __init__(self, damping_coefficient=DAMPING_COEFFICIENT, tau=TAU):
         super().__init__()
 
-        self.A = (
+        self.register_buffer(
+            "A",
             torch.tensor(
                 [[0.0, 1.0], [-1 / (4 * damping_coefficient**2), -1.0]],
                 dtype=torch.float32,
             )
-            / tau
+            / tau,
         )
 
-        self.B = torch.tensor(
-            [[0.0, 1.0 / (np.sqrt(2.0) * damping_coefficient)]], dtype=torch.float32
-        ) / np.sqrt(tau)
+        self.register_buffer(
+            "B",
+            torch.tensor(
+                [[0.0, 1.0 / (np.sqrt(2.0) * damping_coefficient)]], dtype=torch.float32
+            )
+            / np.sqrt(tau),
+        )
 
     # Drift
     def f(self, t, y):
