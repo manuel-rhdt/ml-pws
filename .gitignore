@@ -1,5 +1,6 @@
 # Custom entries
 
+*.pth
 models/*
 notebooks/training_logs/
 workspace
