@@ -1,5 +1,6 @@
 # Custom entries
 
+*.ckpt
 *.pth
 models/*
 notebooks/training_logs/
